@@ -1,0 +1,24 @@
+{
+  "name": "@repo/db-config",
+  "module": "src/index.ts",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@repo/env-config": "workspace:*",
+    "drizzle-orm": "^1.0.0-rc.4",
+    "pg": "^8.23.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/bun": "latest",
+    "@types/pg": "^8.23.1",
+    "drizzle-kit": "^1.0.0-rc.4"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
