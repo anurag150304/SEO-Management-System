@@ -47,7 +47,7 @@ export class SchemaController {
 
     if (parsedType.success) {
       const schema = await SchemaService.getSchemaByType(
-        parsedType.data.schemaType as any
+        parsedType.data.schemaType as any,
       );
       return res.status(200).json({
         message: "Schema fetched successfully",
@@ -80,7 +80,8 @@ export class SchemaController {
 
     if (parsedType.success) {
       // Validate schemaData
-      const rawData = req.body?.schemaData !== undefined ? req.body.schemaData : req.body;
+      const rawData =
+        req.body?.schemaData !== undefined ? req.body.schemaData : req.body;
       const parsedData = schemaDataValidation.safeParse(rawData);
 
       if (!parsedData.success) {
@@ -91,7 +92,7 @@ export class SchemaController {
 
       const schema = await SchemaService.updateSchemaByType(
         parsedType.data.schemaType as any,
-        parsedData.data
+        parsedData.data,
       );
 
       return res.status(200).json({
@@ -112,7 +113,7 @@ export class SchemaController {
 
       const schema = await SchemaService.updateSchema(
         parsedId.data.id,
-        parsedData.data
+        parsedData.data,
       );
 
       return res.status(200).json({
@@ -136,7 +137,7 @@ export class SchemaController {
 
     if (parsedType.success) {
       const deleted = await SchemaService.deleteSchemaByType(
-        parsedType.data.schemaType as any
+        parsedType.data.schemaType as any,
       );
       return res.status(200).json({
         message: "Schema deleted successfully",

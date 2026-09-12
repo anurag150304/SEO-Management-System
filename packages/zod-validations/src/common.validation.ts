@@ -21,7 +21,7 @@ export const batchReorderSchema = z.object({
       z.object({
         id: z.coerce.number().int().positive(),
         displayOrder: z.coerce.number().int().min(1),
-      })
+      }),
     )
     .min(1, "At least one item is required to reorder."),
 });
@@ -36,7 +36,7 @@ export const emptyStringToUndefined = (val: unknown) => {
  */
 export function hasAtLeastOneField(
   data: Record<string, unknown>,
-  ignoredKeys: string[] = ["id", "seoId", "robotsIndex", "robotsFollow"]
+  ignoredKeys: string[] = ["id", "seoId", "robotsIndex", "robotsFollow"],
 ): boolean {
   return Object.entries(data).some(([key, val]) => {
     if (ignoredKeys.includes(key)) return false;

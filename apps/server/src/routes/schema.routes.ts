@@ -10,12 +10,21 @@ router.post(["/", "/schemas"], SchemaController.createSchema);
 router.get(["/", "/schemas"], SchemaController.getAllSchemas);
 
 // Read schema by schemaType (e.g. /schemas/ORGANISATION, /schemas/FAQ, or ID)
-router.get(["/:schemaType", "/schemas/:schemaType"], SchemaController.getSchema);
+router.get(
+  ["/:schemaType", "/schemas/:schemaType"],
+  SchemaController.getSchema,
+);
 
 // Update schema by schemaType (or ID)
-router.put(["/:schemaType", "/schemas/:schemaType"], SchemaController.updateSchema);
+router.put(
+  ["/:schemaType", "/schemas/:schemaType"],
+  SchemaController.updateSchema,
+);
 
 // Delete schema by schemaType (or ID)
-router.delete(["/:schemaType", "/schemas/:schemaType"], SchemaController.deleteSchema);
+router.delete(
+  ["/:schemaType", "/schemas/:schemaType"],
+  SchemaController.deleteSchema,
+);
 
 export default router;

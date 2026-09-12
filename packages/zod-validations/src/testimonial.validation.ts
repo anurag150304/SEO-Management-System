@@ -1,5 +1,8 @@
 import { z } from "zod";
-import { hasAtLeastOneField, emptyStringToUndefined } from "./common.validation";
+import {
+  hasAtLeastOneField,
+  emptyStringToUndefined,
+} from "./common.validation";
 
 export const createTestimonialSchema = z.object({
   customerName: z
@@ -21,23 +24,24 @@ export const createTestimonialSchema = z.object({
 
   image: z.preprocess(
     emptyStringToUndefined,
-    z.url({ error: "Customer image must be a valid URL." }).max(500).optional().nullable()
+    z
+      .url({ error: "Customer image must be a valid URL." })
+      .max(500)
+      .optional()
+      .nullable(),
   ),
 
   displayOrder: z.preprocess(
     emptyStringToUndefined,
-    z.coerce.number().int().optional()
+    z.coerce.number().int().optional(),
   ),
 });
 
 export const updateTestimonialSchema = createTestimonialSchema
   .partial()
-  .refine(
-    (data) => hasAtLeastOneField(data),
-    {
-      error: "Please provide at least one field to update testimonial details.",
-    }
-  );
+  .refine((data) => hasAtLeastOneField(data), {
+    error: "Please provide at least one field to update testimonial details.",
+  });
 
 export type CreateTestimonialInput = z.infer<typeof createTestimonialSchema>;
 export type UpdateTestimonialInput = z.infer<typeof updateTestimonialSchema>;

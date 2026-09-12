@@ -24,7 +24,7 @@ export const schemaTypeEnum = z.preprocess(
   z.enum(SUPPORTED_SCHEMA_TYPES, {
     error:
       "schemaType must be one of: ORGANISATION, FAQ, BREADCRUMB, WEBSITE, LOCAL_BUSINESS",
-  })
+  }),
 );
 
 export const schemaDataValidation = z.preprocess(
@@ -52,8 +52,8 @@ export const schemaDataValidation = z.preprocess(
       },
       {
         message: "schemaData cannot be empty.",
-      }
-    )
+      },
+    ),
 );
 
 export const createSchemaValidation = z.object({
@@ -61,14 +61,18 @@ export const createSchemaValidation = z.object({
   schemaData: schemaDataValidation,
 });
 
-export const updateSchemaValidation = z.object({
-  schemaType: schemaTypeEnum.optional(),
-  schemaData: schemaDataValidation.optional(),
-}).refine((data) => data.schemaType !== undefined || data.schemaData !== undefined,
-  {
-    message: "At least one field (schemaType or schemaData) must be provided for update.",
-  }
-);
+export const updateSchemaValidation = z
+  .object({
+    schemaType: schemaTypeEnum.optional(),
+    schemaData: schemaDataValidation.optional(),
+  })
+  .refine(
+    (data) => data.schemaType !== undefined || data.schemaData !== undefined,
+    {
+      message:
+        "At least one field (schemaType or schemaData) must be provided for update.",
+    },
+  );
 
 export const schemaTypeParamValidation = z.object({
   schemaType: schemaTypeEnum,

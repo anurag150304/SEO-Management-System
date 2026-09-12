@@ -12,8 +12,8 @@ import { CTError } from "@/utils/errHandler.util";
 import type {
   CreateOccasionInput,
   UpdateOccasionInput,
-} from "@/validations/occasion.validation";
-import type { BatchReorderInput } from "@/validations/common.validation";
+  BatchReorderInput,
+} from "@repo/zod-validations";
 
 export class OccasionService {
   static async createOccasion(

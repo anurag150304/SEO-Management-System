@@ -27,7 +27,7 @@ const basePath: string = env.BASE_PATH || "/api/v1";
 // CORS Configuration
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:3001",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -104,8 +104,8 @@ app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
   const errorObj = err as any;
   const status =
     typeof errorObj?.status === "number" &&
-    errorObj.status >= 400 &&
-    errorObj.status < 600
+      errorObj.status >= 400 &&
+      errorObj.status < 600
       ? errorObj.status
       : 500;
 

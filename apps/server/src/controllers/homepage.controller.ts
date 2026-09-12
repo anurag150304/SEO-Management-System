@@ -11,9 +11,9 @@ export class HomepageController {
   static async createHomepage(req: Request, res: Response) {
     const files = req.files as
       | {
-        heroImage?: Express.Multer.File[];
-        aboutImage?: Express.Multer.File[];
-      }
+          heroImage?: Express.Multer.File[];
+          aboutImage?: Express.Multer.File[];
+        }
       | undefined;
 
     const heroImageUrl = files?.heroImage?.[0]
@@ -73,9 +73,9 @@ export class HomepageController {
 
     const files = req.files as
       | {
-        heroImage?: Express.Multer.File[];
-        aboutImage?: Express.Multer.File[];
-      }
+          heroImage?: Express.Multer.File[];
+          aboutImage?: Express.Multer.File[];
+        }
       | undefined;
 
     const heroImageUrl = files?.heroImage?.[0]

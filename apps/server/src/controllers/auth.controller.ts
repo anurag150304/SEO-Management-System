@@ -42,6 +42,7 @@ export class AuthController {
     res.cookie("auth_token", token, getAuthCookieOptions());
 
     return res.status(201).json({
+      message: "User registered successfully",
       token,
       user: {
         id: user.id,
@@ -86,6 +87,7 @@ export class AuthController {
     res.cookie("auth_token", token, getAuthCookieOptions());
 
     return res.status(200).json({
+      message: "Signed in successfully",
       token,
       user: {
         id: user.id,
@@ -102,7 +104,10 @@ export class AuthController {
       throw new CTError(401, "Authentication failed!");
     }
 
-    return res.status(200).json(user);
+    return res.status(200).json({
+      message: "Profile fetched successfully",
+      ...user,
+    });
   }
 
   static async signout(req: Request, res: Response) {
@@ -115,7 +120,13 @@ export class AuthController {
     res.clearCookie("auth_token", { path: "/" });
 
     return res.status(200).json({
-      success: true
+      message: "Logged out successfully",
+      success: true,
     });
+  }
+
+  static async checkAdminExists(_req: Request, res: Response) {
+    const hasAdmin = await UserService.hasAdmin();
+    return res.status(200).json({ hasAdmin });
   }
 }

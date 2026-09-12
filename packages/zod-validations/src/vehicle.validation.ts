@@ -26,7 +26,7 @@ export const featuresValidation = z.preprocess(
   z
     .array(z.string().min(1, "Feature item cannot be empty."))
     .optional()
-    .nullable()
+    .nullable(),
 );
 
 export const createVehicleSchema = z.object({
@@ -44,35 +44,36 @@ export const createVehicleSchema = z.object({
       .positive("Seating capacity must be greater than 0.")
       .max(200, "Seating capacity must be less than 200.")
       .optional()
-      .nullable()
+      .nullable(),
   ),
 
   description: z.preprocess(
     emptyStringToUndefined,
-    z.string().optional().nullable()
+    z.string().optional().nullable(),
   ),
 
   image: z.preprocess(
     emptyStringToUndefined,
-    z.url({ error: "Vehicle image must be a valid URL." }).max(500).optional().nullable()
+    z
+      .url({ error: "Vehicle image must be a valid URL." })
+      .max(500)
+      .optional()
+      .nullable(),
   ),
 
   features: featuresValidation,
 
   displayOrder: z.preprocess(
     emptyStringToUndefined,
-    z.coerce.number().int().optional()
+    z.coerce.number().int().optional(),
   ),
 });
 
 export const updateVehicleSchema = createVehicleSchema
   .partial()
-  .refine(
-    (data) => hasAtLeastOneField(data),
-    {
-      error: "Please provide at least one field to update vehicle details.",
-    }
-  );
+  .refine((data) => hasAtLeastOneField(data), {
+    error: "Please provide at least one field to update vehicle details.",
+  });
 
 export const vehicleIdParamValidation = idParamValidation;
 export const reorderVehicleItemSchema = singleReorderSchema;

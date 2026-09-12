@@ -1,17 +1,29 @@
-import type { SignupInput } from "@/validations/auth.validation";
+import type { SignupInput } from "@repo/zod-validations";
 import { CTError } from "@/utils/errHandler.util";
 import { db, DrizzleQueryError, eq, models } from "@repo/db-config";
 
 export class UserService {
+  static async hasAdmin(): Promise<boolean> {
+    const adminCount = await db.$count(
+      models.users,
+      eq(models.users.role, "ADMIN"),
+    );
+    return adminCount > 0;
+  }
+
   static async createUser({ name, email, password, role }: SignupInput) {
     try {
+      // If an ADMIN user already exists, any subsequent user can only be an EDITOR
+      const adminExists = await this.hasAdmin();
+      const assignedRole = adminExists ? "EDITOR" : role || "ADMIN";
+
       const [user] = await db
         .insert(models.users)
         .values({
           name,
           email,
           passwordHash: password,
-          role,
+          role: assignedRole,
         })
         .returning({
           id: models.users.id,

@@ -24,12 +24,12 @@ export class SEOController {
     });
   }
 
-  static async addSEO(req: Request, res: Response) {
+  static async createSEO(req: Request, res: Response) {
     const files = req.files as
       | {
-        ogImage?: Express.Multer.File[];
-        twitterImage?: Express.Multer.File[];
-      }
+          ogImage?: Express.Multer.File[];
+          twitterImage?: Express.Multer.File[];
+        }
       | undefined;
 
     const ogImageUrl = files?.ogImage?.[0]
@@ -57,9 +57,10 @@ export class SEOController {
       throw new CTError(400, "Something went wrong while adding SEO data!");
     }
 
-    return res.status(200).json({
-      message: "SEO data saved successfully",
+    return res.status(201).json({
+      message: "SEO metadata created successfully",
       seo: inserted,
+      seoId: inserted.id,
     });
   }
 
@@ -69,9 +70,9 @@ export class SEOController {
 
     const files = req.files as
       | {
-        ogImage?: Express.Multer.File[];
-        twitterImage?: Express.Multer.File[];
-      }
+          ogImage?: Express.Multer.File[];
+          twitterImage?: Express.Multer.File[];
+        }
       | undefined;
 
     const ogImageUrl = files?.ogImage?.[0]
@@ -99,13 +100,14 @@ export class SEOController {
     if (!data) {
       throw new CTError(
         400,
-        "Something went wrong while updating SEO metadata!"
+        "Something went wrong while updating SEO metadata!",
       );
     }
 
     return res.status(200).json({
-      message: "Metadata updated successfully",
+      message: "SEO metadata updated successfully",
       seo: data,
+      seoId: data.id,
     });
   }
 }

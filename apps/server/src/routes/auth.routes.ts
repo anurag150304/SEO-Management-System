@@ -6,6 +6,7 @@ const router: Router = Router();
 
 router.post("/signup", AuthController.signup);
 router.post("/signin", AuthController.signin);
+router.get("/has-admin", AuthController.checkAdminExists);
 router.get("/signout", authUser, AuthController.signout);
 router.get("/me", authUser, AuthController.profile);
 

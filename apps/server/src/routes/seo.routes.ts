@@ -14,10 +14,15 @@ const seoUploads = upload.fields([
 router.get(["/", "/:id"], SEOController.getSEO);
 
 // Create SEO metadata (or update if already exists)
-router.post(["/", "/create"], authUser, seoUploads, SEOController.addSEO);
+router.post(["/", "/create"], authUser, seoUploads, SEOController.createSEO);
 
 // Update SEO metadata
-router.put(["/", "/:id"], authUser, seoUploads, SEOController.updateSEO);
-router.post("/update", authUser, seoUploads, SEOController.updateSEO);
+router.put(
+  ["/", "/:id", "/update"],
+  authUser,
+  seoUploads,
+  SEOController.updateSEO,
+);
+router.post(["/update", "/:id"], authUser, seoUploads, SEOController.updateSEO);
 
 export default router;

@@ -13,7 +13,7 @@ import type {
   CreateVehicleInput,
   UpdateVehicleInput,
   ReorderVehiclesInput,
-} from "@/validations/vehicle.validation";
+} from "@repo/zod-validations";
 
 export class VehicleService {
   static async createVehicle(data: CreateVehicleInput): Promise<VehicleRecord> {

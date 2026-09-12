@@ -2,7 +2,7 @@ import { CTError } from "@/utils/errHandler.util";
 import type {
   CreateSchemaInput,
   UpdateSchemaInput,
-} from "@/validations/schema.validation";
+} from "@repo/zod-validations";
 import {
   type SchemaRecord,
   type SchemaEnumType,
@@ -23,7 +23,7 @@ async function findById(id: number): Promise<SchemaRecord | null> {
 }
 
 async function findByType(
-  schemaType: SchemaEnumType
+  schemaType: SchemaEnumType,
 ): Promise<SchemaRecord | null> {
   const [record] = await db
     .select()
@@ -41,7 +41,7 @@ export class SchemaService {
       // Upsert: update existing schema for this schemaType
       return await this.updateSchemaByType(
         data.schemaType as SchemaEnumType,
-        data.schemaData
+        data.schemaData,
       );
     }
 
@@ -68,7 +68,7 @@ export class SchemaService {
       ) {
         throw new CTError(
           409,
-          `Schema of type '${data.schemaType}' already exists.`
+          `Schema of type '${data.schemaType}' already exists.`,
         );
       }
       throw err;
@@ -83,7 +83,7 @@ export class SchemaService {
   }
 
   static async getSchemaByType(
-    schemaType: SchemaEnumType
+    schemaType: SchemaEnumType,
   ): Promise<SchemaRecord> {
     const schema = await findByType(schemaType);
     if (!schema) {
@@ -94,7 +94,7 @@ export class SchemaService {
 
   static async updateSchemaByType(
     schemaType: SchemaEnumType,
-    schemaData: unknown
+    schemaData: unknown,
   ): Promise<SchemaRecord> {
     const existing = await findByType(schemaType);
 
@@ -109,7 +109,10 @@ export class SchemaService {
         .returning();
 
       if (!created) {
-        throw new CTError(400, `Failed to create schema for type: '${schemaType}'`);
+        throw new CTError(
+          400,
+          `Failed to create schema for type: '${schemaType}'`,
+        );
       }
       return created;
     }
@@ -124,14 +127,17 @@ export class SchemaService {
       .returning();
 
     if (!updated) {
-      throw new CTError(400, `Failed to update schema for type: '${schemaType}'`);
+      throw new CTError(
+        400,
+        `Failed to update schema for type: '${schemaType}'`,
+      );
     }
 
     return updated;
   }
 
   static async deleteSchemaByType(
-    schemaType: SchemaEnumType
+    schemaType: SchemaEnumType,
   ): Promise<SchemaRecord> {
     const existing = await findByType(schemaType);
     if (!existing) {
@@ -144,7 +150,10 @@ export class SchemaService {
       .returning();
 
     if (!deleted) {
-      throw new CTError(400, `Failed to delete schema for type: '${schemaType}'`);
+      throw new CTError(
+        400,
+        `Failed to delete schema for type: '${schemaType}'`,
+      );
     }
 
     return deleted;
@@ -160,7 +169,7 @@ export class SchemaService {
 
   static async updateSchema(
     id: number,
-    data: UpdateSchemaInput
+    data: UpdateSchemaInput,
   ): Promise<SchemaRecord> {
     const existing = await findById(id);
     if (!existing) {

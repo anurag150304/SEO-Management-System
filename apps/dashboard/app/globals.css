@@ -1,26 +1,89 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f8f9fa;
+  --foreground: #2d3748;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Custom Soft UI Utilities */
+.soft-shadow {
+  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+}
+
+.soft-shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.soft-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Vibrant Soft UI Gradients */
+.gradient-primary {
+  background-image: linear-gradient(310deg, #1754ff 0%, #21d4fd 100%);
+}
+
+.gradient-dark {
+  background-image: linear-gradient(310deg, #141727 0%, #3a416f 100%);
+}
+
+.gradient-success {
+  background-image: linear-gradient(310deg, #17ad37 0%, #98ec2d 100%);
+}
+
+.gradient-warning {
+  background-image: linear-gradient(310deg, #f53939 0%, #fbcf33 100%);
+}
+
+.gradient-danger {
+  background-image: linear-gradient(310deg, #ea0606 0%, #ff667c 100%);
+}
+
+.gradient-card {
+  background-image: linear-gradient(310deg, #141727 0%, #212529 100%);
+}
+
+/* Custom Scrollbar for sidebars and tables */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Toast Animations (Pop up from bottom, pop in from right) */
+@keyframes toast-enter {
+  0% {
+    opacity: 0;
+    transform: translate3d(32px, 24px, 0) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.animate-toast-enter {
+  animation: toast-enter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+

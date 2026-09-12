@@ -33,7 +33,8 @@ function buildSEOPayload({
   if (ogDescription !== undefined) payload.ogDescription = ogDescription;
   if (ogImage !== undefined) payload.ogImage = ogImage;
   if (twitterTitle !== undefined) payload.twitterTitle = twitterTitle;
-  if (twitterDescription !== undefined) payload.twitterDescription = twitterDescription;
+  if (twitterDescription !== undefined)
+    payload.twitterDescription = twitterDescription;
   if (twitterImage !== undefined) payload.twitterImage = twitterImage;
 
   return payload;
@@ -75,7 +76,7 @@ export class SEOService {
       .limit(1);
 
     if (existing) {
-      return await this.updateSEOData({ ...fields, seoId: existing.id });
+      throw new CTError(422, "Can not create another seo metadata.");
     }
 
     const payload = buildSEOPayload(fields);
@@ -105,7 +106,7 @@ export class SEOService {
       if (!latest) {
         throw new CTError(
           404,
-          "No SEO metadata record found to update. Please create SEO metadata first."
+          "No SEO metadata record found to update. Please create SEO metadata first.",
         );
       }
       targetId = latest.id;

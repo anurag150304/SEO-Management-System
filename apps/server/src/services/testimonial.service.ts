@@ -12,8 +12,8 @@ import { CTError } from "@/utils/errHandler.util";
 import type {
   CreateTestimonialInput,
   UpdateTestimonialInput,
-} from "@/validations/testimonial.validation";
-import type { BatchReorderInput } from "@/validations/common.validation";
+  BatchReorderInput,
+} from "@repo/zod-validations";
 
 export class TestimonialService {
   static async createTestimonial(
