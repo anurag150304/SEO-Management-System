@@ -1,4 +1,4 @@
-# UrbanFleet — SEO & Dynamic Homepage Management System
+# SEO Management System
 
 I built **UrbanFleet** as an end-to-end full-stack platform for a vehicle and tempo traveller rental business. It solves a common real-world problem: **giving non-technical administrators complete control over website search engine optimization (SEO), Google schema markups, and all homepage content without touching source code.**
 
@@ -153,21 +153,3 @@ bun run dev
 - **Public Website:** `http://localhost:3000`
 - **Admin Dashboard:** `http://localhost:3001`
 - **Backend API:** `http://localhost:8000`
-
----
-
-## Docker Deployment (for Render)
-
-For production deployment of the backend API on **Render**, I configured a multi-stage `Dockerfile` (`apps/server/Dockerfile`) utilizing `turbo prune server --docker`.
-
-### Why This Setup?
-
-- **Isolates Monorepo Dependencies:** Extracts only the `server` app and its shared internal packages (`@repo/db-config`, `@repo/zod-validations`, `@repo/env-config`), keeping the frontend code out of the backend container.
-- **Optimized Layer Caching:** Separates lockfiles from source code so Docker caches `bun install`, speeding up re-deployments on Render.
-- **Lightweight Runtime:** Built on `oven/bun:1-alpine` for fast boot times and minimal RAM usage.
-
-**Render Settings:**
-
-- **Environment:** `Docker`
-- **Root Directory:** `.` (or leave empty)
-- **Dockerfile Path:** `./apps/server/Dockerfile`

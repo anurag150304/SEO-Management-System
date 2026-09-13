@@ -39,6 +39,7 @@ apps/dashboard/
 ## Design & UI Theme
 
 I designed the interface inspired by the **Soft UI Dashboard** theme:
+
 - **Colors:** Clean white cards (`bg-white rounded-2xl shadow-sm`) on a soft background (`#f8f9fa`).
 - **Gradients:** Vibrant blue-to-cyan, emerald, and purple accent gradients for icon boxes and active buttons.
 - **Font:** I configured **Plus Jakarta Sans** as the global font for modern, clean readability.
@@ -67,15 +68,15 @@ I designed the interface inspired by the **Soft UI Dashboard** theme:
 
 I implemented two distinct roles to keep data safe:
 
-| Feature | Admin | Editor | Why I Did This |
-| :--- | :---: | :---: | :--- |
-| **Top Title** | `"Admin Console"` | `"Editor Console"` | Shows the user their current access level |
-| **Overview Tab** | Full Access | Hidden | Editors land directly on content editing |
-| **Schema Markup Tab** | Full Access | Hidden | Raw JSON-LD editing is reserved for Admin |
-| **Delete Items** | Allowed | Hidden | Red delete buttons are hidden for Editors to prevent accidental data loss |
-| **Robots & Canonical URL** | Editable | Locked | Prevents editors from accidentally de-indexing the site on Google |
-| **Contact Information** | Editable | View Only | Contact phone, email, and map are locked for Editors |
-| **Vehicles, Occasions, Reviews, Gallery** | Full Access | Add, Edit, Reorder | Editors can manage daily fleet listings freely |
+| Feature                                   |       Admin       |       Editor       | Why I Did This                                                            |
+| :---------------------------------------- | :---------------: | :----------------: | :------------------------------------------------------------------------ |
+| **Top Title**                             | `"Admin Console"` | `"Editor Console"` | Shows the user their current access level                                 |
+| **Overview Tab**                          |    Full Access    |       Hidden       | Editors land directly on content editing                                  |
+| **Schema Markup Tab**                     |    Full Access    |       Hidden       | Raw JSON-LD editing is reserved for Admin                                 |
+| **Delete Items**                          |      Allowed      |       Hidden       | Red delete buttons are hidden for Editors to prevent accidental data loss |
+| **Robots & Canonical URL**                |     Editable      |       Locked       | Prevents editors from accidentally de-indexing the site on Google         |
+| **Contact Information**                   |     Editable      |     View Only      | Contact phone, email, and map are locked for Editors                      |
+| **Vehicles, Occasions, Reviews, Gallery** |    Full Access    | Add, Edit, Reorder | Editors can manage daily fleet listings freely                            |
 
 ---
 
@@ -105,19 +106,3 @@ I implemented two distinct roles to keep data safe:
    - Edit Hero headline, sub-headline, CTA buttons, and banner image.
    - Edit About Us text and full-width image.
    - Update office address, phone, email, and Google Maps embed code with a live map preview.
-
----
-
-## How to Run the Dashboard
-
-```bash
-# Install dependencies (from project root)
-bun install
-
-# Start the dashboard development server (runs on port 3001)
-cd apps/dashboard
-bun run dev
-
-# Check TypeScript types
-bun run check-types
-```

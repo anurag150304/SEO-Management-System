@@ -1,6 +1,6 @@
 # Public Website — UrbanFleet Luxury Rentals
 
-I built this public website using **Next.js 16**, **React 19**, and **Tailwind CSS**. It is the customer-facing frontend for **UrbanFleet**, a luxury vehicle and tempo traveller rental service. 
+I built this public website using **Next.js 16**, **React 19**, and **Tailwind CSS**. It is the customer-facing frontend for **UrbanFleet**, a luxury vehicle and tempo traveller rental service.
 
 I designed it to be fast, clean, and fully optimized for search engines. Every piece of content, SEO meta tag, and structured data schema updates **instantly** whenever an admin makes a change in the dashboard.
 
@@ -37,11 +37,13 @@ apps/web/
 ## Architectural Decisions I Made
 
 ### 1. Zero Extra Dependencies (No Axios or TanStack Query)
+
 - I decided **not** to use Axios or TanStack Query in `apps/web`.
 - Because this is a public marketing website, using native Next.js Server Components with native `fetch()` saves over **50KB of JavaScript bundle size**.
 - This makes the website load faster, improving the **Google Core Web Vitals** SEO ranking score.
 
 ### 2. Instant Updates with Server-Side Rendering (SSR)
+
 - In `layout.tsx` and `page.tsx`, I set:
   ```ts
   export const dynamic = "force-dynamic";
@@ -51,6 +53,7 @@ apps/web/
 - This means every time a user or Googlebot visits or refreshes the page, Next.js server-renders the HTML with the freshest database records. Admin updates appear **instantly with zero delay**.
 
 ### 3. Single Network Roundtrip (`/public/homepage`)
+
 - Instead of making 8 separate HTTP calls to load each section, I designed the backend endpoint `GET /api/v1/public/homepage`.
 - The website fetches the entire homepage (Hero, Vehicles, Occasions, Testimonials, Gallery, Contact, SEO, and Schemas) in **one single fast request**.
 
@@ -61,6 +64,7 @@ apps/web/
 I built the `<head>` section in `apps/web/app/layout.tsx` to handle all search engine requirements automatically:
 
 ### 1. Dynamic Meta Tags (`generateMetadata`)
+
 - **Meta Title & Description:** Fetched from database and inserted into `<title>` and `<meta name="description">`.
 - **Focus Keywords:** Mapped to `<meta name="keywords">`.
 - **Canonical URL:** Injected into `<link rel="canonical">` to prevent duplicate content issues.
@@ -68,7 +72,9 @@ I built the `<head>` section in `apps/web/app/layout.tsx` to handle all search e
 - **Social Sharing (Open Graph & Twitter):** Sets `og:title`, `og:description`, `og:image`, and Twitter card tags so links look rich when shared on WhatsApp, Facebook, or Twitter.
 
 ### 2. Automatic JSON-LD Schema Injection
+
 Inside `layout.tsx`, all active schemas created in the dashboard are injected directly as `<script type="application/ld+json">`:
+
 - **Organization Schema:** Company logo, website URL, and customer support number.
 - **Local Business Schema:** Physical office address, price range, and opening hours for local Google Maps ranking.
 - **FAQ Schema:** Question and answer pairs eligible for rich expandable snippets in Google search results.
@@ -80,6 +86,7 @@ Inside `layout.tsx`, all active schemas created in the dashboard are injected di
 ## Pure Database-Driven UI (No Fake Mock Data)
 
 I followed a strict rule: **Never show hardcoded fake data if the database is empty.**
+
 - **Vehicles:** If no vehicles are added in the dashboard yet, the section is not displayed.
 - **Occasions, Reviews, Gallery:** Only appear when real records exist in the database.
 - **About Us & Contact:** Only render if content is provided. Google Maps embed only renders if a valid embed code is saved.
@@ -121,19 +128,3 @@ I followed a strict rule: **Never show hardcoded fake data if the database is em
 
 10. **Footer (`Footer.tsx`):**
     - Clean, light footer with brand summary, section links, and copyright.
-
----
-
-## How to Run the Website
-
-```bash
-# Install dependencies (from project root)
-bun install
-
-# Start the public website development server (runs on port 3000)
-cd apps/web
-bun run dev
-
-# Check TypeScript types
-bun run check-types
-```
