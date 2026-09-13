@@ -36,6 +36,5 @@
   },
   "peerDependencies": {
     "typescript": "^7"
-  },
-  "packageManager": "bun"
+  }
 }
