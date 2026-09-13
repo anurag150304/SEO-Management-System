@@ -30,7 +30,9 @@ const publicPath: string = `${basePath}/public`;
 // CORS Configuration
 app.use(
   cors({
-    origin: ["http://localhost:3001", "http://localhost:3000"],
+    origin: env.NODE_ENV === "production" ?
+      [env.DASHBOARD_URL, env.PUBLIC_URL] :
+      ["http://localhost:3000", "http://localhost:3001"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
     methods: ["GET", "POST", "PUT", "DELETE"],

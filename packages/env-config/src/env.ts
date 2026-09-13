@@ -15,6 +15,8 @@ const envSchema = z.object({
 
   BASE_URL: z.url(),
   BASE_PATH: z.string().default("/api/v1"),
+  DASHBOARD_URL: z.url(),
+  PUBLIC_URL: z.url(),
 
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),

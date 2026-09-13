@@ -1,11 +1,12 @@
 import { ApiError, type BackendErrorResponse } from "@/types";
 import axios, { AxiosError } from "axios";
 
-const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000";
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/api/v1/dashboard";
+const baseURL = process.env.NODE_ENV === "production" ?
+  process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:8000";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/api/v1";
 
 export const apiClient = axios.create({
-  baseURL: `${baseURL}${basePath}`,
+  baseURL: `${baseURL}${basePath}/dashboard`,
   headers: {
     "Content-Type": "application/json",
   },
