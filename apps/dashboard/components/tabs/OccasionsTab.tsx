@@ -79,11 +79,10 @@ function SortableOccasionCard({
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col justify-between transition-all select-none ${
-        isDragging
+      className={`bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col justify-between transition-all select-none ${isDragging
           ? "shadow-2xl scale-[1.03] z-30 opacity-90 ring-2 ring-purple-500/40 relative"
           : "hover:shadow-md"
-      }`}
+        }`}
     >
       <div>
         <div className="relative h-40 bg-slate-100 overflow-hidden">
@@ -102,7 +101,6 @@ function SortableOccasionCard({
             #{occ.displayOrder}
           </div>
 
-          {/* Drag Handle Top-Right */}
           <button
             type="button"
             {...attributes}
@@ -188,12 +186,13 @@ export function OccasionsTab() {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingOccasion, setEditingOccasion] =
-    useState<OccasionRecord | null>(null);
+  const [editingOccasion, setEditingOccasion] = useState<OccasionRecord | null>(
+    null,
+  );
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -242,7 +241,10 @@ export function OccasionsTab() {
           id: editingOccasion.id,
           payload: formData,
         });
-        toast.success(`Occasion "${title}" updated successfully!`, "Occasion Updated");
+        toast.success(
+          `Occasion "${title}" updated successfully!`,
+          "Occasion Updated",
+        );
       } else {
         await createOccasion.mutateAsync(formData);
         toast.success(`Occasion "${title}" added!`, "Occasion Created");
@@ -257,7 +259,10 @@ export function OccasionsTab() {
     if (!confirm(`Are you sure you want to remove "${occasionTitle}"?`)) return;
     try {
       await deleteOccasion.mutateAsync(id);
-      toast.success(`Occasion "${occasionTitle}" deleted successfully.`, "Occasion Removed");
+      toast.success(
+        `Occasion "${occasionTitle}" deleted successfully.`,
+        "Occasion Removed",
+      );
     } catch (err) {
       toast.error(err, "Delete Failed");
     }
@@ -265,7 +270,7 @@ export function OccasionsTab() {
 
   const handleMoveOrder = async (
     occ: OccasionRecord,
-    direction: "up" | "down"
+    direction: "up" | "down",
   ) => {
     const currentIndex = occasions.findIndex((o) => o.id === occ.id);
     if (currentIndex === -1) return;
@@ -284,7 +289,7 @@ export function OccasionsTab() {
       });
       toast.success(
         `Position moved ${direction} successfully!`,
-        "Order Updated"
+        "Order Updated",
       );
     } catch (err) {
       toast.error(err, "Reorder Failed");
@@ -296,11 +301,9 @@ export function OccasionsTab() {
     if (!over || active.id === over.id) return;
 
     const oldIndex = occasions.findIndex(
-      (item) => item.id === Number(active.id)
+      (item) => item.id === Number(active.id),
     );
-    const newIndex = occasions.findIndex(
-      (item) => item.id === Number(over.id)
-    );
+    const newIndex = occasions.findIndex((item) => item.id === Number(over.id));
     if (oldIndex === -1 || newIndex === -1) return;
 
     const targetOccasion = occasions[newIndex];
@@ -319,7 +322,6 @@ export function OccasionsTab() {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner */}
       <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-base font-bold text-slate-800">
@@ -331,14 +333,13 @@ export function OccasionsTab() {
         </div>
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 bg-gradient-to-tl from-purple-600 to-indigo-400 text-white rounded-xl text-xs font-bold shadow-md shadow-purple-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+          className="px-4 py-2.5 bg-linear-to-tl from-purple-600 to-indigo-400 text-white rounded-xl text-xs font-bold shadow-md shadow-purple-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Occasion</span>
         </button>
       </div>
 
-      {/* Occasions Grid with Drag and Drop */}
       {isLoading ? (
         <div className="bg-white p-12 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
@@ -352,11 +353,12 @@ export function OccasionsTab() {
             No Occasions Configured
           </h4>
           <p className="text-xs text-slate-400 mt-1 mb-4">
-            Create travel packages like Weddings, Outstation Trips, or Corporate Events.
+            Create travel packages like Weddings, Outstation Trips, or Corporate
+            Events.
           </p>
           <button
             onClick={openCreateModal}
-            className="px-4 py-2 bg-gradient-to-tl from-purple-600 to-indigo-400 text-white rounded-xl text-xs font-bold shadow-sm"
+            className="px-4 py-2 bg-linear-to-tl from-purple-600 to-indigo-400 text-white rounded-xl text-xs font-bold shadow-sm"
           >
             Create First Occasion
           </button>
@@ -391,7 +393,6 @@ export function OccasionsTab() {
         </DndContext>
       )}
 
-      {/* Add / Edit Occasion Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs">
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
@@ -465,8 +466,10 @@ export function OccasionsTab() {
                 </button>
                 <button
                   type="submit"
-                  disabled={createOccasion.isPending || updateOccasion.isPending}
-                  className="px-4 py-1.5 bg-gradient-to-tl from-purple-600 to-indigo-400 text-white rounded-xl text-xs font-bold shadow-md shadow-purple-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                  disabled={
+                    createOccasion.isPending || updateOccasion.isPending
+                  }
+                  className="px-4 py-1.5 bg-linear-to-tl from-purple-600 to-indigo-400 text-white rounded-xl text-xs font-bold shadow-md shadow-purple-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
                 >
                   {(createOccasion.isPending || updateOccasion.isPending) && (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />

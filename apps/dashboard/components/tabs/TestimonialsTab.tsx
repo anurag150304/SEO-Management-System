@@ -79,11 +79,10 @@ function SortableTestimonialCard({
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-2xl shadow-sm border border-slate-100 p-5 flex flex-col justify-between transition-all select-none ${
-        isDragging
-          ? "shadow-2xl scale-[1.03] z-30 opacity-90 ring-2 ring-amber-500/40 relative"
-          : "hover:shadow-md"
-      }`}
+      className={`bg-white rounded-2xl shadow-sm border border-slate-100 p-5 flex flex-col justify-between transition-all select-none ${isDragging
+        ? "shadow-2xl scale-[1.03] z-30 opacity-90 ring-2 ring-amber-500/40 relative"
+        : "hover:shadow-md"
+        }`}
     >
       <div>
         <div className="flex items-center justify-between mb-3">
@@ -107,11 +106,10 @@ function SortableTestimonialCard({
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star
                     key={star}
-                    className={`w-3 h-3 ${
-                      star <= t.rating
-                        ? "text-amber-400 fill-amber-400"
-                        : "text-slate-200"
-                    }`}
+                    className={`w-3 h-3 ${star <= t.rating
+                      ? "text-amber-400 fill-amber-400"
+                      : "text-slate-200"
+                      }`}
                   />
                 ))}
               </div>
@@ -122,7 +120,6 @@ function SortableTestimonialCard({
             <span className="text-[11px] font-bold text-slate-400">
               #{t.displayOrder}
             </span>
-            {/* Drag Handle */}
             <button
               type="button"
               {...attributes}
@@ -204,7 +201,7 @@ export function TestimonialsTab() {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -286,7 +283,7 @@ export function TestimonialsTab() {
 
   const handleMoveOrder = async (
     t: TestimonialRecord,
-    direction: "up" | "down"
+    direction: "up" | "down",
   ) => {
     const currentIndex = testimonials.findIndex((item) => item.id === t.id);
     if (currentIndex === -1) return;
@@ -305,7 +302,7 @@ export function TestimonialsTab() {
       });
       toast.success(
         `Position moved ${direction} successfully!`,
-        "Order Updated"
+        "Order Updated",
       );
     } catch (err) {
       toast.error(err, "Reorder Failed");
@@ -317,10 +314,10 @@ export function TestimonialsTab() {
     if (!over || active.id === over.id) return;
 
     const oldIndex = testimonials.findIndex(
-      (item) => item.id === Number(active.id)
+      (item) => item.id === Number(active.id),
     );
     const newIndex = testimonials.findIndex(
-      (item) => item.id === Number(over.id)
+      (item) => item.id === Number(over.id),
     );
     if (oldIndex === -1 || newIndex === -1) return;
 
@@ -340,26 +337,25 @@ export function TestimonialsTab() {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner */}
       <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-base font-bold text-slate-800">
             Customer Testimonials
           </h3>
           <p className="text-xs text-slate-400 font-medium">
-            Manage verified client reviews with 1–5 star ratings and drag cards to reorder.
+            Manage verified client reviews with 1–5 star ratings and drag cards
+            to reorder.
           </p>
         </div>
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 bg-gradient-to-tl from-amber-500 to-orange-400 text-white rounded-xl text-xs font-bold shadow-md shadow-orange-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+          className="px-4 py-2.5 bg-linear-to-tl from-amber-500 to-orange-400 text-white rounded-xl text-xs font-bold shadow-md shadow-orange-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Review</span>
         </button>
       </div>
 
-      {/* Testimonials List with Drag and Drop */}
       {isLoading ? (
         <div className="bg-white p-12 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
@@ -377,7 +373,7 @@ export function TestimonialsTab() {
           </p>
           <button
             onClick={openCreateModal}
-            className="px-4 py-2 bg-gradient-to-tl from-amber-500 to-orange-400 text-white rounded-xl text-xs font-bold shadow-sm"
+            className="px-4 py-2 bg-linear-to-tl from-amber-500 to-orange-400 text-white rounded-xl text-xs font-bold shadow-sm"
           >
             Add First Review
           </button>
@@ -412,7 +408,6 @@ export function TestimonialsTab() {
         </DndContext>
       )}
 
-      {/* Add / Edit Testimonial Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs">
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
@@ -446,7 +441,6 @@ export function TestimonialsTab() {
                 />
               </div>
 
-              {/* 1 to 5 Star Rating Picker */}
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1">
                   Rating (1 to 5 Stars) *
@@ -460,11 +454,10 @@ export function TestimonialsTab() {
                       className="p-1 rounded-lg hover:scale-110 transition-transform cursor-pointer"
                     >
                       <Star
-                        className={`w-5 h-5 ${
-                          star <= rating
-                            ? "text-amber-400 fill-amber-400"
-                            : "text-slate-300"
-                        }`}
+                        className={`w-5 h-5 ${star <= rating
+                          ? "text-amber-400 fill-amber-400"
+                          : "text-slate-300"
+                          }`}
                       />
                     </button>
                   ))}
@@ -518,12 +511,12 @@ export function TestimonialsTab() {
                   disabled={
                     createTestimonial.isPending || updateTestimonial.isPending
                   }
-                  className="px-4 py-1.5 bg-gradient-to-tl from-amber-500 to-orange-400 text-white rounded-xl text-xs font-bold shadow-md shadow-orange-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-1.5 bg-linear-to-tl from-amber-500 to-orange-400 text-white rounded-xl text-xs font-bold shadow-md shadow-orange-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
                 >
                   {(createTestimonial.isPending ||
                     updateTestimonial.isPending) && (
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  )}
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    )}
                   <span>{editingTestimonial ? "Update" : "Save Review"}</span>
                 </button>
               </div>

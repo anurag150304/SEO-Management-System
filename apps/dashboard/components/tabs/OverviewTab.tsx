@@ -83,7 +83,6 @@ export function OverviewTab({ onNavigate }: OverviewTabProps) {
 
   return (
     <div className="space-y-6">
-      {/* 1. Stat Cards (matching img_2.png) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((stat, idx) => {
           const Icon = stat.icon;
@@ -116,9 +115,7 @@ export function OverviewTab({ onNavigate }: OverviewTabProps) {
         })}
       </div>
 
-      {/* 2. Hero Feature Cards (matching img_2.png) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Hero Card */}
         <div className="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between relative overflow-hidden">
           <div className="z-10 max-w-lg">
             <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-lg uppercase tracking-wider inline-block">
@@ -154,7 +151,6 @@ export function OverviewTab({ onNavigate }: OverviewTabProps) {
           </div>
         </div>
 
-        {/* Right Homepage & Live Web Card */}
         <div className="lg:col-span-5 relative overflow-hidden rounded-2xl bg-white p-6 shadow-sm border border-slate-100 flex flex-col justify-between group hover:shadow-md transition-shadow">
           <div className="z-10">
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 text-[10px] font-bold text-blue-700 uppercase tracking-wider mb-3">
@@ -195,14 +191,12 @@ export function OverviewTab({ onNavigate }: OverviewTabProps) {
             </div>
           </div>
 
-          {/* Soft background decorative glow */}
           <div className="absolute -right-6 -bottom-6 w-36 h-36 rounded-full bg-linear-to-tl from-cyan-400/10 to-blue-600/10 blur-xl pointer-events-none" />
         </div>
       </div>
 
-      {/* 3. Tables & Overview (matching img_1.png) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Vehicles Quick Fleet Table */}
+
         <div className="lg:col-span-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
           <div className="flex items-center justify-between mb-4">
             <div>
@@ -298,7 +292,6 @@ export function OverviewTab({ onNavigate }: OverviewTabProps) {
           </div>
         </div>
 
-        {/* SEO & Schemas Status Overview */}
         <div className="lg:col-span-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-4">

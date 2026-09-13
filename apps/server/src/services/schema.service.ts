@@ -38,7 +38,6 @@ export class SchemaService {
     const existing = await findByType(data.schemaType as SchemaEnumType);
 
     if (existing) {
-      // Upsert: update existing schema for this schemaType
       return await this.updateSchemaByType(
         data.schemaType as SchemaEnumType,
         data.schemaData,
@@ -99,7 +98,6 @@ export class SchemaService {
     const existing = await findByType(schemaType);
 
     if (!existing) {
-      // If doesn't exist yet, insert fresh record
       const [created] = await db
         .insert(models.schemas)
         .values({

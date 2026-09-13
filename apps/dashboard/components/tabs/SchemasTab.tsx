@@ -130,7 +130,7 @@ const SCHEMA_TYPE_MAP: Record<SupportedSchemaType, string> = {
 };
 
 export function SchemasTab() {
-  const { data: schemasData, isLoading } = useSchemas();
+  const { data: schemasData } = useSchemas();
   const createSchema = useCreateSchema();
   const updateSchema = useUpdateSchema();
   const deleteSchema = useDeleteSchema();
@@ -150,7 +150,6 @@ export function SchemasTab() {
     SCHEMA_CONFIGS.find((c) => c.type === activeSchemaType) ||
     SCHEMA_CONFIGS[0]!;
 
-  // Automatically sync jsonText when switching tabs or when schemas data updates
   useEffect(() => {
     const existing = schemas.find(
       (s) => s.schemaType.toUpperCase() === activeSchemaType.toUpperCase(),
@@ -159,7 +158,6 @@ export function SchemasTab() {
     setJsonText(JSON.stringify(data, null, 2));
   }, [activeSchemaType, schemasData]);
 
-  // Compute live preview payload cleanly
   const previewPayload = useMemo(() => {
     let parsedBody = currentConfig.defaultData;
     try {
@@ -243,7 +241,6 @@ export function SchemasTab() {
 
   return (
     <div className="space-y-6">
-      {/* Schema Type Navigation Pills */}
       <div className="bg-white p-2.5 rounded-2xl shadow-sm border border-slate-100 flex flex-wrap gap-2">
         {SCHEMA_CONFIGS.map((cfg) => {
           const Icon = cfg.icon;
@@ -256,19 +253,17 @@ export function SchemasTab() {
             <button
               key={cfg.type}
               onClick={() => setActiveSchemaType(cfg.type)}
-              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                isSelected
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${isSelected
                   ? "bg-slate-900 text-white shadow-md shadow-slate-900/20"
                   : "bg-slate-50 text-slate-600 hover:bg-slate-100 hover:text-slate-800"
-              }`}
+                }`}
             >
               <Icon className="w-3.5 h-3.5" />
               <span>{cfg.title}</span>
               {isConfigured && (
                 <span
-                  className={`w-1.5 h-1.5 rounded-full ${
-                    isSelected ? "bg-emerald-400" : "bg-emerald-500"
-                  }`}
+                  className={`w-1.5 h-1.5 rounded-full ${isSelected ? "bg-emerald-400" : "bg-emerald-500"
+                    }`}
                   title="Configured"
                 />
               )}
@@ -277,9 +272,7 @@ export function SchemasTab() {
         })}
       </div>
 
-      {/* Main Schema Editor */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left: JSON Structure Editor */}
         <div className="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
           <div className="flex items-center justify-between pb-3 border-b border-slate-100">
             <div className="flex items-center gap-2.5">
@@ -350,7 +343,6 @@ export function SchemasTab() {
           </div>
         </div>
 
-        {/* Right: Live JSON-LD Script Preview */}
         <div className="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-3">

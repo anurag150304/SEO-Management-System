@@ -83,15 +83,13 @@ function SortableVehicleRow({
     <tr
       ref={setNodeRef}
       style={style}
-      className={`transition-colors select-none ${
-        isDragging
+      className={`transition-colors select-none ${isDragging
           ? "bg-blue-50/80 shadow-lg scale-[1.01] z-30 opacity-90 relative rounded-xl"
           : "hover:bg-slate-50/70"
-      }`}
+        }`}
     >
       <td className="py-3 px-4 font-bold text-slate-700">
         <div className="flex items-center gap-2">
-          {/* Drag Handle */}
           <button
             type="button"
             {...attributes}
@@ -210,7 +208,6 @@ export function VehiclesTab() {
 
   const vehicles = vehiclesData?.vehicles || [];
 
-  // dnd-kit sensors: Pointer constraint prevents intercepting button clicks
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -219,16 +216,14 @@ export function VehiclesTab() {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
-  // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingVehicle, setEditingVehicle] = useState<VehicleRecord | null>(
-    null
+    null,
   );
 
-  // Form Fields
   const [title, setTitle] = useState("");
   const [seatingCapacity, setSeatingCapacity] = useState("");
   const [description, setDescription] = useState("");
@@ -256,8 +251,8 @@ export function VehiclesTab() {
       Array.isArray(v.features)
         ? v.features.join(", ")
         : typeof v.features === "string"
-        ? v.features
-        : ""
+          ? v.features
+          : "",
     );
     setImageFile(null);
     setImageUrl(v.image || "");
@@ -297,7 +292,10 @@ export function VehiclesTab() {
           id: editingVehicle.id,
           payload: formData,
         });
-        toast.success(`Vehicle "${title}" updated successfully!`, "Fleet Updated");
+        toast.success(
+          `Vehicle "${title}" updated successfully!`,
+          "Fleet Updated",
+        );
       } else {
         await createVehicle.mutateAsync(formData);
         toast.success(`Vehicle "${title}" added to fleet!`, "Fleet Item Added");
@@ -314,7 +312,7 @@ export function VehiclesTab() {
       await deleteVehicle.mutateAsync(id);
       toast.success(
         `Vehicle "${vehicleTitle}" deleted successfully.`,
-        "Vehicle Removed"
+        "Vehicle Removed",
       );
     } catch (err) {
       toast.error(err, "Delete Failed");
@@ -323,7 +321,7 @@ export function VehiclesTab() {
 
   const handleMoveOrder = async (
     vehicle: VehicleRecord,
-    direction: "up" | "down"
+    direction: "up" | "down",
   ) => {
     const currentIndex = vehicles.findIndex((v) => v.id === vehicle.id);
     if (currentIndex === -1) return;
@@ -342,7 +340,7 @@ export function VehiclesTab() {
       });
       toast.success(
         `Position moved ${direction} successfully!`,
-        "Order Updated"
+        "Order Updated",
       );
     } catch (err) {
       toast.error(err, "Reorder Failed");
@@ -354,11 +352,9 @@ export function VehiclesTab() {
     if (!over || active.id === over.id) return;
 
     const oldIndex = vehicles.findIndex(
-      (item) => item.id === Number(active.id)
+      (item) => item.id === Number(active.id),
     );
-    const newIndex = vehicles.findIndex(
-      (item) => item.id === Number(over.id)
-    );
+    const newIndex = vehicles.findIndex((item) => item.id === Number(over.id));
     if (oldIndex === -1 || newIndex === -1) return;
 
     const targetVehicle = vehicles[newIndex];
@@ -377,26 +373,25 @@ export function VehiclesTab() {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner & Add Button */}
       <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-base font-bold text-slate-800">
             Vehicles Fleet Management
           </h3>
           <p className="text-xs text-slate-400 font-medium">
-            Manage listings, seating capacities, features, and drag to reorder positions.
+            Manage listings, seating capacities, features, and drag to reorder
+            positions.
           </p>
         </div>
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 bg-gradient-to-tl from-blue-600 to-cyan-400 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+          className="px-4 py-2.5 bg-linear-to-tl from-blue-600 to-cyan-400 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Vehicle</span>
         </button>
       </div>
 
-      {/* Vehicles Table with Drag and Drop */}
       <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         {isLoading ? (
           <div className="p-12 flex items-center justify-center">
@@ -411,11 +406,12 @@ export function VehiclesTab() {
               No Vehicles Listed
             </h4>
             <p className="text-xs text-slate-400 mt-1 mb-4">
-              Add Tempo Travellers, Force Urbania, or luxury buses to your fleet.
+              Add Tempo Travellers, Force Urbania, or luxury buses to your
+              fleet.
             </p>
             <button
               onClick={openCreateModal}
-              className="px-4 py-2 bg-gradient-to-tl from-blue-600 to-cyan-400 text-white rounded-xl text-xs font-bold shadow-sm"
+              className="px-4 py-2 bg-linear-to-tl from-blue-600 to-cyan-400 text-white rounded-xl text-xs font-bold shadow-sm"
             >
               Add First Vehicle
             </button>
@@ -464,13 +460,14 @@ export function VehiclesTab() {
         )}
       </div>
 
-      {/* Add / Edit Vehicle Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs">
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between p-4 border-b border-slate-100 shrink-0">
               <h4 className="text-sm font-bold text-slate-800">
-                {editingVehicle ? "Edit Vehicle Listing" : "Add Vehicle Listing"}
+                {editingVehicle
+                  ? "Edit Vehicle Listing"
+                  : "Add Vehicle Listing"}
               </h4>
               <button
                 onClick={closeModal}
@@ -567,12 +564,14 @@ export function VehiclesTab() {
                 <button
                   type="submit"
                   disabled={createVehicle.isPending || updateVehicle.isPending}
-                  className="px-4 py-1.5 bg-gradient-to-tl from-blue-600 to-cyan-400 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-1.5 bg-linear-to-tl from-blue-600 to-cyan-400 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
                 >
                   {(createVehicle.isPending || updateVehicle.isPending) && (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   )}
-                  <span>{editingVehicle ? "Update Vehicle" : "Create Vehicle"}</span>
+                  <span>
+                    {editingVehicle ? "Update Vehicle" : "Create Vehicle"}
+                  </span>
                 </button>
               </div>
             </form>

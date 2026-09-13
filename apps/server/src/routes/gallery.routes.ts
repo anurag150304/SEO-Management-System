@@ -5,11 +5,9 @@ import { authUser } from "@/middlewares/auth.middleware";
 
 const router: Router = Router();
 
-// Reorder gallery items (must precede /:id)
 router.put("/reorder", authUser, GalleryController.reorderGallery);
 router.put("/:id/reorder", authUser, GalleryController.reorderGallery);
 
-// Create gallery item
 router.post(
   ["/", "/create"],
   authUser,
@@ -17,13 +15,10 @@ router.post(
   GalleryController.createGalleryItem,
 );
 
-// Read all gallery items
 router.get("/", authUser, GalleryController.getAllGalleryItems);
 
-// Read single gallery item by id
 router.get("/:id", authUser, GalleryController.getGalleryItemById);
 
-// Update gallery item by id
 router.put(
   "/:id",
   authUser,
@@ -37,7 +32,6 @@ router.post(
   GalleryController.updateGalleryItem,
 );
 
-// Delete gallery item by id
 router.delete("/:id", authUser, GalleryController.deleteGalleryItem);
 
 export default router;

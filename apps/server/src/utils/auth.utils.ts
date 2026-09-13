@@ -9,7 +9,6 @@ export const hashPassword = async (password: string): Promise<string> => {
   return await bcrypt.hash(password, 10);
 };
 
-// Alias for backwards compatibility
 export const hashPasshword = hashPassword;
 
 export const comparePassword = async (
@@ -55,7 +54,6 @@ export const insertToken = async (token: string): Promise<boolean> => {
       "code" in err.cause &&
       err.cause.code === "23505"
     ) {
-      // Token is already blacklisted
       return true;
     }
     throw err;

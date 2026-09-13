@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { useSignup, useHasAdmin } from "@/hooks";
 import { useToast } from "@/providers/toastProvider";
-import { ApiError } from "@/lib";
+import { ApiError } from "@/types";
 
 export default function SignUpPage() {
   const router = useRouter();

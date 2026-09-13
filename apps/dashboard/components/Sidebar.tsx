@@ -114,7 +114,6 @@ export function Sidebar({
 
   return (
     <>
-      {/* Mobile backdrop */}
       {isMobileOpen && (
         <div
           className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-40 lg:hidden"
@@ -129,7 +128,6 @@ export function Sidebar({
         )}
       >
         <div className="flex flex-col h-full overflow-y-auto pr-1">
-          {/* Brand Header */}
           <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100 mb-4">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-linear-to-tl from-blue-600 to-cyan-400 flex items-center justify-center text-white shadow-md shadow-blue-500/20 shrink-0">
@@ -153,9 +151,7 @@ export function Sidebar({
             </button>
           </div>
 
-          {/* Navigation Links */}
           <div className="space-y-6 flex-1">
-            {/* Main Section */}
             <div>
               <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
                 Main Pages
@@ -192,7 +188,6 @@ export function Sidebar({
               </div>
             </div>
 
-            {/* Management Section */}
             <div>
               <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">
                 Fleet & Content

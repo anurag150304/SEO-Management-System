@@ -24,7 +24,6 @@ export class GalleryService {
     }
 
     return await db.transaction(async (tx) => {
-      // Backend automatically assigns fresh/highest displayOrder
       const maxOrder = await DisplayOrderUtil.getMaxDisplayOrder(
         tx,
         models.gallery,

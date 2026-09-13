@@ -5,11 +5,9 @@ import { authUser } from "@/middlewares/auth.middleware";
 
 const router: Router = Router();
 
-// Reorder occasions (must precede /:id)
 router.put("/reorder", authUser, OccasionController.reorderOccasions);
 router.put("/:id/reorder", authUser, OccasionController.reorderOccasions);
 
-// Create occasion
 router.post(
   ["/", "/create"],
   authUser,
@@ -17,13 +15,10 @@ router.post(
   OccasionController.createOccasion,
 );
 
-// Read all occasions
 router.get("/", authUser, OccasionController.getAllOccasions);
 
-// Read single occasion by id
 router.get("/:id", authUser, OccasionController.getOccasionById);
 
-// Update occasion by id
 router.put(
   "/:id",
   authUser,
@@ -37,7 +32,6 @@ router.post(
   OccasionController.updateOccasion,
 );
 
-// Delete occasion by id
 router.delete("/:id", authUser, OccasionController.deleteOccasion);
 
 export default router;

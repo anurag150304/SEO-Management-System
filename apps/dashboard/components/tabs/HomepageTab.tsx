@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useHomepage, useCreateHomepage, useUpdateHomepage } from "@/hooks";
 import { useToast } from "@/providers/toastProvider";
-import { ApiError } from "@/lib";
+import { ApiError } from "@/types";
 
 export function HomepageTab() {
   const { data: homepageData, isLoading } = useHomepage();
@@ -21,15 +21,12 @@ export function HomepageTab() {
 
   const homepage = homepageData?.homepage;
 
-  // Hero Section State
   const [heroHeading, setHeroHeading] = useState("");
   const [heroSubheading, setHeroSubheading] = useState("");
   const [heroCtaText, setHeroCtaText] = useState("");
   const [heroCtaUrl, setHeroCtaUrl] = useState("");
   const [heroImageUrl, setHeroImageUrl] = useState("");
   const [heroImageFile, setHeroImageFile] = useState<File | null>(null);
-
-  // About Section State
   const [aboutTitle, setAboutTitle] = useState("");
   const [aboutDescription, setAboutDescription] = useState("");
   const [aboutImageUrl, setAboutImageUrl] = useState("");
@@ -122,8 +119,8 @@ export function HomepageTab() {
       {feedback && (
         <div
           className={`p-4 rounded-xl flex items-center gap-3 text-xs font-semibold ${feedback.type === "success"
-              ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-              : "bg-rose-50 text-rose-800 border border-rose-200"
+            ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+            : "bg-rose-50 text-rose-800 border border-rose-200"
             }`}
         >
           {feedback.type === "success" ? (
@@ -136,7 +133,7 @@ export function HomepageTab() {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* 1. Hero Section Management Card */}
+
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
           <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
             <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
@@ -229,7 +226,6 @@ export function HomepageTab() {
           </div>
         </div>
 
-        {/* 2. About Us Section Management Card */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
           <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
             <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
@@ -291,7 +287,6 @@ export function HomepageTab() {
           </div>
         </div>
 
-        {/* Action Bar */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
           <span className="text-xs text-slate-400 font-medium">
             Homepage changes are reflected on the public website dynamically.

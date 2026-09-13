@@ -10,19 +10,15 @@ const seoUploads = upload.fields([
   { name: "twitterImage", maxCount: 1 },
 ]);
 
-// Read active or specific SEO metadata
 router.get(["/", "/:id"], SEOController.getSEO);
-
-// Create SEO metadata (or update if already exists)
 router.post(["/", "/create"], authUser, seoUploads, SEOController.createSEO);
+router.post(["/update", "/:id"], authUser, seoUploads, SEOController.updateSEO);
 
-// Update SEO metadata
 router.put(
   ["/", "/:id", "/update"],
   authUser,
   seoUploads,
   SEOController.updateSEO,
 );
-router.post(["/update", "/:id"], authUser, seoUploads, SEOController.updateSEO);
 
 export default router;

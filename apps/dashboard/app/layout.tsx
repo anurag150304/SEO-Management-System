@@ -13,8 +13,7 @@ const jakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "SEO Management Dashboard",
-  description:
-    "Website SEO Settings and Dynamic Homepage Management System",
+  description: "Website SEO Settings and Dynamic Homepage Management System",
 };
 
 export default function RootLayout({

@@ -1,15 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  MapPin,
-  Phone,
-  Mail,
-  Map,
-  Save,
-  Loader2,
-  Lock,
-} from "lucide-react";
+import { MapPin, Phone, Mail, Map, Save, Loader2, Lock } from "lucide-react";
 import {
   useContact,
   useCreateContact,
@@ -76,7 +68,7 @@ export function ContactTab() {
 
   const isSaving = createContact.isPending || updateContact.isPending;
 
-  // Extract src from iframe if user pasted raw <iframe ... src="...">
+  // Extract src from iframe if admin or editor pasted raw <iframe ... src="...">
   const getMapEmbedSrc = (raw: string) => {
     if (!raw) return "";
     const match = raw.match(/src=["']([^"']+)["']/);
@@ -235,7 +227,6 @@ export function ContactTab() {
           </div>
         </div>
 
-        {/* Action Bar */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
           <span className="text-xs text-slate-400 font-medium">
             Contact information is synchronized across all web landing pages.

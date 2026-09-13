@@ -1,159 +1,173 @@
-# Turborepo starter
+# UrbanFleet — SEO & Dynamic Homepage Management System
 
-This Turborepo starter is maintained by the Turborepo core team.
+I built **UrbanFleet** as an end-to-end full-stack platform for a vehicle and tempo traveller rental business. It solves a common real-world problem: **giving non-technical administrators complete control over website search engine optimization (SEO), Google schema markups, and all homepage content without touching source code.**
 
-## Using this example
+Every change saved in the admin panel instantly reflects on the public website and inside Google search crawler head tags.
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
+## What I Built
+
+The project is structured as a TypeScript monorepo powered by **Turborepo** and **Bun**, split into three specialized applications:
+
+1. **Backend REST API (`apps/server`):** Built with Express.js 5 and Drizzle ORM. Handles JWT authentication, single-admin role enforcement, atomic transaction-based reordering, Cloudinary image uploads, and an aggregated public endpoint.
+2. **Admin Dashboard (`apps/dashboard`):** Built with Next.js 16, React 19, and Tailwind CSS. Features a Soft UI design, TanStack Query data synchronization, `@dnd-kit` drag-and-drop reordering, and animated bottom-right toast notifications.
+3. **Public Consumer Website (`apps/web`):** Built with Next.js Server Components. Delivers instant dynamic Server-Side Rendering (SSR) with zero extra client bundle overhead, automated `<head>` metadata injection, and pre-formatted JSON-LD schema scripts.
+
+---
+
+## Core System Capabilities
+
+- **Automated Head & SEO Engine:** Dynamically injects Meta Title, Meta Description, Focus Keywords, Canonical URL, and Robots directives (`index/noindex`, `follow/nofollow`).
+- **Google JSON-LD Schema Generator:** Automatically generates and injects valid schema.org structured data for all 5 required schemas: **Organization**, **Local Business**, **FAQ**, **Breadcrumb**, and **Website**.
+- **Social Media Previews:** Real-time generation of Open Graph (`og:*`) and Twitter Card (`twitter:*`) tags with social share banner uploads.
+- **Pure Database-Driven Public Site:** The consumer website renders only real records saved in the database. Empty sections are omitted cleanly without displaying fake mock data.
+- **Hardware-Accelerated Drag & Drop:** Administrators can drag cards and table rows using `@dnd-kit` to reorder fleet vehicles, travel occasions, testimonials, and gallery images.
+- **Atomic Transaction Reordering:** When an item is moved or deleted, the backend runs a database transaction that shifts intermediate rows to guarantee consecutive `displayOrder` values with zero gaps or duplicates.
+- **Role-Based Access Control (RBAC):** The first registered user is granted the `ADMIN` role; all subsequent accounts are auto-assigned `EDITOR`. Critical settings (schemas, delete operations, and robots directives) are protected and visible only to Admins.
+
+---
+
+## Technologies I Used
+
+### Backend & Database
+
+- **Runtime & Language:** Node.js, Bun, TypeScript
+- **Framework:** Express.js 5
+- **ORM & Database:** Drizzle ORM, PostgreSQL (`node-postgres`)
+- **Authentication & Security:** JSON Web Tokens (JWT), HTTP-only cookies, bcrypt password hashing, token blacklisting table
+- **Validation:** Zod v4 (shared across monorepo packages)
+- **Media Storage:** Multer, Cloudinary SDK
+
+### Frontend (Admin Dashboard)
+
+- **Framework:** Next.js 16 (App Router), React 19
+- **State & Data Fetching:** TanStack React Query v5 (automatic cache invalidation & optimistic updates)
+- **HTTP Client:** Axios with custom `ApiError` mapping and automatic `FormData` header boundary resolution
+- **Drag and Drop:** `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/modifiers`, `@dnd-kit/utilities`
+- **Design System:** Tailwind CSS v4, Plus Jakarta Sans typography, Soft UI aesthetic inspired by Creative Tim
+- **Icons & UI:** Lucide React, animated bottom-right Toast notification system
+
+### Frontend (Public Website)
+
+- **Framework:** Next.js 16 (Server Components), React 19
+- **Rendering Strategy:** Dynamic Server-Side Rendering (`cache: "no-store"`, `dynamic = "force-dynamic"`) for instant admin updates
+- **Client Bundle Footprint:** Minimal — zero dependencies on Axios or TanStack Query, saving 50KB+ of JavaScript for faster Google Core Web Vitals
+- **Design:** Tailwind CSS v4, light theme hero banner, responsive card grids, live Google Maps embed, interactive booking modal
+
+### Monorepo & Tooling
+
+- **Monorepo Engine:** Turborepo
+- **Package Manager:** Bun (v1.4+)
+- **Shared Packages:**
+  - `@repo/zod-validations`: Single source of truth for all input schemas and TypeScript types
+  - `@repo/db-config`: Shared Drizzle schema models, relations, and database client
+  - `@repo/env-config`: Type-safe environment variable validation
+  - `@repo/typescript-config`: Shared compiler configurations
+  - `@repo/eslint-config`: Shared linting rules
+
+---
+
+## Monorepo Architecture
+
+```
+SEO Dashboard/
+├── apps/
+│   ├── server/           # Express 5 REST API (Port 8000)
+│   ├── dashboard/        # Next.js Admin Dashboard (Port 3001)
+│   └── web/              # Next.js Public Website (Port 3000)
+├── packages/
+│   ├── db-config/        # Drizzle ORM schema & database connection
+│   ├── env-config/       # Zod-validated environment configurations
+│   ├── zod-validations/  # Shared validation schemas & inferred types
+│   ├── typescript-config/# Shared tsconfig bases
+│   └── eslint-config/    # Shared linting configs
+└── README.md             # Project overview
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## Role-Based Permissions Summary
 
-### Apps and Packages
+| Feature                                               |     ADMIN     |       EDITOR        |
+| :---------------------------------------------------- | :-----------: | :-----------------: |
+| **Console Branding**                                  | Admin Console |   Editor Console    |
+| **Dashboard Overview Tab**                            |  Full Access  |       Hidden        |
+| **JSON-LD Schema Markup Tab**                         |  Full Access  |       Hidden        |
+| **Delete Items (Fleet, Occasions, Reviews, Gallery)** |    Allowed    |       Hidden        |
+| **Robots Directives & Canonical URL**                 |   Editable    | Locked (Admin Only) |
+| **Contact Information & Map Embed**                   |   Editable    |      View Only      |
+| **Fleet & Content Management**                        |   Full CRUD   | Add, Edit, Reorder  |
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `@next/eslint-plugin-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+---
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Getting Started
 
-### Utilities
+### 1. Prerequisites
 
-This Turborepo has some additional tools already setup for you:
+- **Bun** (v1.4 or higher installed globally)
+- **PostgreSQL Database** (local instance or cloud database such as Neon / Supabase)
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### 2. Environment Configuration
 
-### Build
+Ensure your `.env` files are configured:
 
-To build all apps and packages, run the following command:
+```env
+# Root / Server (.env)
+PORT=8000
+NODE_ENV=development
+BASE_PATH=/api/v1
+BASE_URL=http://localhost:8000
+DATABASE_URL=postgresql://user:password@localhost:5432/seo_dashboard
+JWT_SECRET=your_secure_jwt_secret_key
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+# apps/dashboard/.env
+NEXT_PUBLIC_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_BASE_PATH=/api/v1/dashboard
+NEXT_PUBLIC_WEB_URL=http://localhost:3000
 
-```sh
-cd my-turborepo
-turbo build
+# apps/web/.env
+NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 ```
 
-Without global `turbo`, use your package manager:
+### 3. Install & Run
 
-```sh
-cd my-turborepo
-npx turbo build
-bun exec turbo build
-bun exec turbo build
+```bash
+# Install all dependencies across the monorepo
+bun install
+
+# Run database migrations or push schema
+cd packages/db-config
+bun run drizzle-kit push
+
+# Start all three applications concurrently (Server, Dashboard, Web)
+cd ../..
+bun run dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### 4. Application Ports
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+- **Public Website:** `http://localhost:3000`
+- **Admin Dashboard:** `http://localhost:3001`
+- **Backend API:** `http://localhost:8000`
 
-```sh
-turbo build --filter=docs
-```
+---
 
-Without global `turbo`:
+## Docker Deployment (for Render)
 
-```sh
-npx turbo build --filter=docs
-bun exec turbo build --filter=docs
-bun exec turbo build --filter=docs
-```
+For production deployment of the backend API on **Render**, I configured a multi-stage `Dockerfile` (`apps/server/Dockerfile`) utilizing `turbo prune server --docker`.
 
-### Develop
+### Why This Setup?
 
-To develop all apps and packages, run the following command:
+- **Isolates Monorepo Dependencies:** Extracts only the `server` app and its shared internal packages (`@repo/db-config`, `@repo/zod-validations`, `@repo/env-config`), keeping the frontend code out of the backend container.
+- **Optimized Layer Caching:** Separates lockfiles from source code so Docker caches `bun install`, speeding up re-deployments on Render.
+- **Lightweight Runtime:** Built on `oven/bun:1-alpine` for fast boot times and minimal RAM usage.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
+**Render Settings:**
 
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-bun exec turbo dev
-bun exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-bun exec turbo dev --filter=web
-bun exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-bun exec turbo login
-bun exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-bun exec turbo link
-bun exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- **Environment:** `Docker`
+- **Root Directory:** `.` (or leave empty)
+- **Dockerfile Path:** `./apps/server/Dockerfile`

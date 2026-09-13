@@ -23,7 +23,6 @@ export default function DashboardPage() {
   const [currentTab, setCurrentTab] = useState("overview");
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Authentication check: redirect to /signin if not logged in
   useEffect(() => {
     if (!isLoading && (isError || !profile)) {
       router.replace("/signin");
@@ -31,8 +30,6 @@ export default function DashboardPage() {
   }, [isLoading, isError, profile, router]);
 
   const isAdmin = profile?.role === "ADMIN";
-
-  // Role check: if not Admin, default to "seo" instead of "overview"
   useEffect(() => {
     if (
       profile &&
@@ -43,7 +40,6 @@ export default function DashboardPage() {
     }
   }, [profile, isAdmin, currentTab]);
 
-  // Loading Screen while verifying authentication
   if (isLoading) {
     return (
       <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center p-4">
@@ -60,14 +56,13 @@ export default function DashboardPage() {
     );
   }
 
-  // Prevent flicker before redirect
   if (!profile) {
     return null;
   }
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-slate-700 flex flex-col justify-between">
-      {/* Floating Sidebar */}
+
       <Sidebar
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
@@ -75,16 +70,13 @@ export default function DashboardPage() {
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
 
-      {/* Main Content Area */}
       <div className="lg:pl-72 p-3 sm:p-4 md:p-6 min-h-screen flex flex-col justify-between max-w-full overflow-x-hidden">
         <div>
-          {/* Top Navbar */}
           <Navbar
             currentTab={currentTab}
             onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
           />
 
-          {/* Tab Content Panels */}
           <main className="pb-8">
             {currentTab === "overview" &&
               (isAdmin ? (

@@ -13,7 +13,6 @@ export class UserService {
 
   static async createUser({ name, email, password, role }: SignupInput) {
     try {
-      // If an ADMIN user already exists, any subsequent user can only be an EDITOR
       const adminExists = await this.hasAdmin();
       const assignedRole = adminExists ? "EDITOR" : role || "ADMIN";
 

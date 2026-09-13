@@ -7,3 +7,4 @@ export * from "./occasion.type";
 export * from "./testimonials.type";
 export * from "./gallery.type";
 export * from "./contact.type";
+export * from "./axios.type";

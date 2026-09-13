@@ -80,11 +80,10 @@ function SortableGalleryCard({
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col justify-between transition-all select-none group ${
-        isDragging
+      className={`bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden flex flex-col justify-between transition-all select-none group ${isDragging
           ? "shadow-2xl scale-[1.03] z-30 opacity-90 ring-2 ring-rose-500/40 relative"
           : "hover:shadow-md"
-      }`}
+        }`}
     >
       <div>
         <div className="relative h-44 bg-slate-100 overflow-hidden">
@@ -97,7 +96,6 @@ function SortableGalleryCard({
             #{item.displayOrder}
           </div>
 
-          {/* Drag Handle Top-Right */}
           <button
             type="button"
             {...attributes}
@@ -183,7 +181,7 @@ export function GalleryTab() {
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -255,7 +253,7 @@ export function GalleryTab() {
 
   const handleMoveOrder = async (
     item: GalleryRecord,
-    direction: "up" | "down"
+    direction: "up" | "down",
   ) => {
     const currentIndex = gallery.findIndex((g) => g.id === item.id);
     if (currentIndex === -1) return;
@@ -274,7 +272,7 @@ export function GalleryTab() {
       });
       toast.success(
         `Position moved ${direction} successfully!`,
-        "Order Updated"
+        "Order Updated",
       );
     } catch (err) {
       toast.error(err, "Reorder Failed");
@@ -285,12 +283,8 @@ export function GalleryTab() {
     const { active, over } = event;
     if (!over || active.id === over.id) return;
 
-    const oldIndex = gallery.findIndex(
-      (item) => item.id === Number(active.id)
-    );
-    const newIndex = gallery.findIndex(
-      (item) => item.id === Number(over.id)
-    );
+    const oldIndex = gallery.findIndex((item) => item.id === Number(active.id));
+    const newIndex = gallery.findIndex((item) => item.id === Number(over.id));
     if (oldIndex === -1 || newIndex === -1) return;
 
     const target = gallery[newIndex];
@@ -309,26 +303,25 @@ export function GalleryTab() {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner */}
       <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-base font-bold text-slate-800">
             Media Gallery & SEO Alt Tags
           </h3>
           <p className="text-xs text-slate-400 font-medium">
-            Manage high-resolution fleet photos with descriptive alt text, and drag photos to reorder sequence.
+            Manage high-resolution fleet photos with descriptive alt text, and
+            drag photos to reorder sequence.
           </p>
         </div>
         <button
           onClick={openCreateModal}
-          className="px-4 py-2.5 bg-gradient-to-tl from-rose-500 to-pink-400 text-white rounded-xl text-xs font-bold shadow-md shadow-pink-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+          className="px-4 py-2.5 bg-linear-to-tl from-rose-500 to-pink-400 text-white rounded-xl text-xs font-bold shadow-md shadow-pink-500/25 hover:opacity-95 transition-opacity flex items-center gap-2 cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Upload Image</span>
         </button>
       </div>
 
-      {/* Gallery Photo Grid with Drag and Drop */}
       {isLoading ? (
         <div className="bg-white p-12 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-center">
           <Loader2 className="w-8 h-8 animate-spin text-rose-500" />
@@ -346,7 +339,7 @@ export function GalleryTab() {
           </p>
           <button
             onClick={openCreateModal}
-            className="px-4 py-2 bg-gradient-to-tl from-rose-500 to-pink-400 text-white rounded-xl text-xs font-bold shadow-sm"
+            className="px-4 py-2 bg-linear-to-tl from-rose-500 to-pink-400 text-white rounded-xl text-xs font-bold shadow-sm"
           >
             Upload First Photo
           </button>
@@ -381,7 +374,6 @@ export function GalleryTab() {
         </DndContext>
       )}
 
-      {/* Upload / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/40 backdrop-blur-xs">
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 w-full max-w-md max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
@@ -414,7 +406,8 @@ export function GalleryTab() {
                   className="w-full px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20"
                 />
                 <p className="text-[10px] text-slate-400 mt-1">
-                  Accurate alt text boosts Google Image Search ranking and accessibility.
+                  Accurate alt text boosts Google Image Search ranking and
+                  accessibility.
                 </p>
               </div>
 
@@ -447,7 +440,7 @@ export function GalleryTab() {
                 <button
                   type="submit"
                   disabled={createGallery.isPending || updateGallery.isPending}
-                  className="px-4 py-1.5 bg-gradient-to-tl from-rose-500 to-pink-400 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-1.5 bg-linear-to-tl from-rose-500 to-pink-400 text-white rounded-xl text-xs font-bold shadow-md shadow-rose-500/20 hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
                 >
                   {(createGallery.isPending || updateGallery.isPending) && (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />

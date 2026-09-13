@@ -13,6 +13,7 @@ import galleryRoute from "@/routes/gallery.routes";
 import contactRoute from "@/routes/contact.routes";
 import { CTError } from "@/utils/errHandler.util";
 import schemaRoute from "@/routes/schema.routes";
+import publicRoute from "@/routes/public.routes";
 import authRoute from "@/routes/auth.routes";
 import seoRoute from "@/routes/seo.routes";
 import cookieParser from "cookie-parser";
@@ -23,14 +24,16 @@ import cors from "cors";
 
 const app: Express = express();
 const basePath: string = env.BASE_PATH || "/api/v1";
+const dashboardPath: string = `${basePath}/dashboard`;
+const publicPath: string = `${basePath}/public`;
 
 // CORS Configuration
 app.use(
   cors({
-    origin: "http://localhost:3001",
+    origin: ["http://localhost:3001", "http://localhost:3000"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
   }),
 );
 
@@ -40,31 +43,43 @@ app.use(cookieParser());
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Health Check & Root Endpoints
-const healthHandler = (_: Request, res: Response) => {
-  return res.status(200).json({
+// Server Health Check
+const healthHandler = (base: string) => {
+  return {
     status: "ok",
-    message: "SEO Management API is running",
+    message: `${base} API is running`,
     timestamp: new Date().toISOString(),
     basePath,
-  });
+  };
 };
 
-app.get("/", healthHandler);
-app.get("/health", healthHandler);
-app.get(basePath, healthHandler);
+app.get("/", (_: Request, res: Response) =>
+  res.status(200).json(healthHandler("SEO Management")),
+);
+app.get("/health", (_: Request, res: Response) =>
+  res.status(200).json(healthHandler("SEO Management")),
+);
+app.get(dashboardPath, (_: Request, res: Response) =>
+  res.status(200).json(healthHandler("SEO Dashboard")),
+);
+app.get(publicPath, (_: Request, res: Response) =>
+  res.status(200).json(healthHandler("SEO ManagemPublic")),
+);
 
-// API Routes
-app.use(`${basePath}/auth`, authRoute);
-app.use(`${basePath}/seo`, seoRoute);
-app.use(`${basePath}/schemas`, schemaRoute);
-app.use(`${basePath}/homepage`, homepageRoute);
-app.use(`${basePath}/vehicles`, vehicleRoute);
-app.use(`${basePath}/occasions`, occasionRoute);
-app.use(`${basePath}/testimonials`, testimonialRoute);
-app.use(`${basePath}/gallery`, galleryRoute);
-app.use(`${basePath}/contact`, contactRoute);
-app.use(`${basePath}/contact-settings`, contactRoute);
+// Dashboard API Routes
+app.use(`${dashboardPath}/seo`, seoRoute);
+app.use(`${dashboardPath}/auth`, authRoute);
+app.use(`${dashboardPath}/schemas`, schemaRoute);
+app.use(`${dashboardPath}/contact`, contactRoute);
+app.use(`${dashboardPath}/gallery`, galleryRoute);
+app.use(`${dashboardPath}/vehicles`, vehicleRoute);
+app.use(`${dashboardPath}/homepage`, homepageRoute);
+app.use(`${dashboardPath}/occasions`, occasionRoute);
+app.use(`${dashboardPath}/testimonials`, testimonialRoute);
+app.use(`${dashboardPath}/contact-settings`, contactRoute);
+
+// Public API Route
+app.use(publicPath, publicRoute);
 
 // 404 Not Found Handler
 app.use((req: Request, res: Response) => {
@@ -115,7 +130,7 @@ app.use((err: unknown, req: Request, res: Response, _next: NextFunction) => {
       : errorObj?.message || "Something went wrong!";
 
   if (status === 500) {
-    console.error(`[UnhandledError] ${req.method} ${req.originalUrl}:`, err);
+    console.error(`UnhandledError:  ${req.method} ${req.originalUrl}:`, err);
   }
 
   return res.status(status).json({ error: message });

@@ -1,7 +1,8 @@
+import { ApiError, type BackendErrorResponse } from "@/types";
 import axios, { AxiosError } from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8000";
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/api/v1";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/api/v1/dashboard";
 
 export const apiClient = axios.create({
   baseURL: `${baseURL}${basePath}`,
@@ -11,74 +12,6 @@ export const apiClient = axios.create({
   withCredentials: true,
   timeout: 15_000,
 });
-
-export interface BackendErrorResponse {
-  error?: string;
-  message?: string;
-  errors?: Record<string, string[]>;
-  field?: string;
-  status?: number;
-}
-
-export class ApiError extends Error {
-  status?: number;
-  errors?: Record<string, string[]>;
-  field?: string;
-  raw?: unknown;
-
-  constructor(
-    message: string,
-    status?: number,
-    errors?: Record<string, string[]>,
-    field?: string,
-    raw?: unknown,
-  ) {
-    super(message);
-    this.name = "ApiError";
-    this.status = status;
-    this.errors = errors;
-    this.field = field;
-    this.raw = raw;
-    Object.setPrototypeOf(this, ApiError.prototype);
-  }
-
-  get isValidationError(): boolean {
-    return (
-      this.status === 422 ||
-      Boolean(this.errors && Object.keys(this.errors).length > 0)
-    );
-  }
-
-  get isUnauthorized(): boolean {
-    return this.status === 401;
-  }
-
-  get isForbidden(): boolean {
-    return this.status === 403;
-  }
-
-  get isNotFound(): boolean {
-    return this.status === 404;
-  }
-
-  get isConflict(): boolean {
-    return this.status === 409;
-  }
-
-  getFirstError(): string {
-    if (this.errors) {
-      const firstEntry = Object.values(this.errors)[0];
-      if (firstEntry?.[0]) {
-        return firstEntry[0];
-      }
-    }
-    return this.message;
-  }
-
-  getFieldError(fieldName: string): string | undefined {
-    return this.errors?.[fieldName]?.[0];
-  }
-}
 
 export function handleAxiosError(error: unknown): ApiError {
   if (error instanceof ApiError) {
@@ -94,7 +27,7 @@ export function handleAxiosError(error: unknown): ApiError {
     if (!err.response) {
       if (err.code === "ECONNABORTED") {
         return new ApiError(
-          "Request timed out. Please check your connection and try again.",
+          "Request timed out due to render free tier usage. Please refresh once again.",
           status,
         );
       }
@@ -109,12 +42,12 @@ export function handleAxiosError(error: unknown): ApiError {
     let field: string | undefined = undefined;
 
     // Getting our defined errors
-    if (data && typeof data === "object") {
+    if (data) {
       fieldErrors = data.errors;
       field = data.field;
 
       // Zod Validation Errors
-      if (data.errors && typeof data.errors === "object") {
+      if (data.errors) {
         const firstField = Object.keys(data.errors)[0];
         const firstMessage = firstField ? data.errors[firstField]?.[0] : null;
 
@@ -134,11 +67,11 @@ export function handleAxiosError(error: unknown): ApiError {
         detailMessage = `${data.error} (${data.field})`;
       }
       // Custom Application Errors
-      else if (data.error && typeof data.error === "string") {
+      else if (data.error) {
         detailMessage = data.error;
       }
       // Standard Message
-      else if (data.message && typeof data.message === "string") {
+      else if (data.message) {
         detailMessage = data.message;
       }
 
@@ -171,7 +104,7 @@ apiClient.interceptors.request.use(
       delete config.headers["Content-Type"];
     }
 
-    // Attach Bearer token from localStorage if present (supplements HTTP-only cookie)
+    // Attaching Bearer token from localStorage if present
     if (typeof window !== "undefined") {
       const token =
         localStorage.getItem("auth_token") || localStorage.getItem("token");
@@ -186,7 +119,7 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(handleAxiosError(error)),
 );
 
-// Response Interceptor: Seamlessly maps all errors to ApiError
+// Mapping all errors to ApiError
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => Promise.reject(handleAxiosError(error)),

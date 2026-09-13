@@ -1,13 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Search,
-  Globe,
-  Share2,
-  Loader2,
-  Lock,
-} from "lucide-react";
+import { Search, Globe, Share2, Loader2, Lock } from "lucide-react";
 import { useSeo, useCreateSeo, useUpdateSeo, useProfile } from "@/hooks";
 import { useToast } from "@/providers/toastProvider";
 
@@ -27,14 +21,10 @@ export function SeoTab() {
   const [canonicalUrl, setCanonicalUrl] = useState("");
   const [robotsIndex, setRobotsIndex] = useState(true);
   const [robotsFollow, setRobotsFollow] = useState(true);
-
-  // Open Graph
   const [ogTitle, setOgTitle] = useState("");
   const [ogDescription, setOgDescription] = useState("");
   const [ogImageUrl, setOgImageUrl] = useState("");
   const [ogImageFile, setOgImageFile] = useState<File | null>(null);
-
-  // Twitter Cards
   const [twitterTitle, setTwitterTitle] = useState("");
   const [twitterDescription, setTwitterDescription] = useState("");
   const [twitterImageUrl, setTwitterImageUrl] = useState("");
@@ -127,7 +117,7 @@ export function SeoTab() {
     <div className="space-y-6">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Main Metadata Form */}
+
           <div className="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
             <div className="flex items-center gap-2.5 pb-3 border-b border-slate-100">
               <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
@@ -144,7 +134,6 @@ export function SeoTab() {
               </div>
             </div>
 
-            {/* Meta Title */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-xs font-bold text-slate-700">
@@ -166,7 +155,6 @@ export function SeoTab() {
               />
             </div>
 
-            {/* Meta Description */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-xs font-bold text-slate-700">
@@ -174,8 +162,8 @@ export function SeoTab() {
                 </label>
                 <span
                   className={`text-[10px] font-bold ${metaDescription.length > 160
-                      ? "text-amber-500"
-                      : "text-slate-400"
+                    ? "text-amber-500"
+                    : "text-slate-400"
                     }`}
                 >
                   {metaDescription.length}/160 chars
@@ -190,7 +178,6 @@ export function SeoTab() {
               />
             </div>
 
-            {/* Focus Keywords */}
             <div>
               <label className="text-xs font-bold text-slate-700 block mb-1">
                 Focus Keywords (comma-separated)
@@ -204,7 +191,6 @@ export function SeoTab() {
               />
             </div>
 
-            {/* Canonical URL */}
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="text-xs font-bold text-slate-700">
@@ -227,7 +213,6 @@ export function SeoTab() {
               />
             </div>
 
-            {/* Robots Configuration */}
             <div className="pt-2">
               <div className="flex items-center justify-between mb-2">
                 <label className="text-xs font-bold text-slate-700">
@@ -242,9 +227,9 @@ export function SeoTab() {
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <label
-                  className={`flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50 ${!isAdmin
-                      ? "opacity-60 cursor-not-allowed"
-                      : "cursor-pointer"
+                  className={`flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50 ${isAdmin
+                    ? "cursor-pointer"
+                    : "opacity-60 cursor-not-allowed"
                     }`}
                 >
                   <input
@@ -266,8 +251,8 @@ export function SeoTab() {
 
                 <label
                   className={`flex items-center gap-2.5 p-3 rounded-xl border border-slate-200 bg-slate-50 ${!isAdmin
-                      ? "opacity-60 cursor-not-allowed"
-                      : "cursor-pointer"
+                    ? "opacity-60 cursor-not-allowed"
+                    : "cursor-pointer"
                     }`}
                 >
                   <input
@@ -290,9 +275,7 @@ export function SeoTab() {
             </div>
           </div>
 
-          {/* Right Column: Google Live Preview & Open Graph */}
           <div className="lg:col-span-5 space-y-6">
-            {/* Google SERP Live Preview */}
             <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
               <div className="flex items-center gap-2 mb-3">
                 <Globe className="w-4 h-4 text-blue-600" />
@@ -314,7 +297,6 @@ export function SeoTab() {
               </div>
             </div>
 
-            {/* Social Sharing (Open Graph / Twitter) */}
             <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 space-y-4">
               <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
                 <Share2 className="w-4 h-4 text-cyan-600" />
@@ -373,7 +355,6 @@ export function SeoTab() {
           </div>
         </div>
 
-        {/* Form Action Bar */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
           <span className="text-xs text-slate-400 font-medium">
             Changes reflect instantly on live website &lt;head&gt; section.

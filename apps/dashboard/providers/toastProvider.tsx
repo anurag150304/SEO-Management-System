@@ -14,7 +14,7 @@ import {
   Info,
   X,
 } from "lucide-react";
-import { ApiError } from "@/lib";
+import { ApiError } from "@/types";
 
 export type ToastType = "success" | "error" | "warning" | "info";
 
@@ -38,7 +38,6 @@ interface ToastContextType {
 
 const ToastContext = createContext<ToastContextType | undefined>(undefined);
 
-// Standalone event emitter / singleton for calling toast outside components if needed
 type ToastListener = (toast: Omit<ToastItem, "id">) => void;
 let globalToastListener: ToastListener | null = null;
 
@@ -96,7 +95,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  // Register global listener
+  // Registering global listener
   React.useEffect(() => {
     globalToastListener = addToast;
     return () => {
@@ -128,7 +127,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={{ toast }}>
       {children}
 
-      {/* Fixed Bottom-Right Toast Viewport */}
       <aside
         aria-live="polite"
         className="fixed bottom-4 right-4 z-50 flex flex-col gap-2.5 max-w-sm w-[calc(100vw-2rem)] pointer-events-none"
@@ -143,7 +141,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                 "0 20px 30px -10px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.05)",
             }}
           >
-            {/* Color Accent Pill / Icon */}
             <div className="shrink-0 mt-0.5">
               {item.type === "success" && (
                 <div className="w-8 h-8 rounded-xl bg-linear-to-tl from-emerald-500 to-teal-400 text-white flex items-center justify-center shadow-md shadow-emerald-500/25">
@@ -167,7 +164,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               )}
             </div>
 
-            {/* Message Body */}
             <div className="flex-1 min-w-0 pr-2">
               {item.title && (
                 <h5 className="text-xs font-bold text-slate-800 leading-tight mb-0.5">
@@ -179,7 +175,6 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               </p>
             </div>
 
-            {/* Close button */}
             <button
               onClick={() => dismiss(item.id)}
               className="text-slate-400 hover:text-slate-700 p-1 rounded-lg hover:bg-slate-100 transition-colors shrink-0 cursor-pointer"

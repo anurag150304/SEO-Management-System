@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Globe2, LogIn, Lock, Mail, AlertCircle, Loader2 } from "lucide-react";
 import { useSignin } from "@/hooks";
 import { useToast } from "@/providers/toastProvider";
-import { ApiError } from "@/lib";
+import { ApiError } from "@/types";
 
 export default function SignInPage() {
   const router = useRouter();

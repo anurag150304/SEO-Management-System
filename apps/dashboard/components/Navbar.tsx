@@ -81,9 +81,8 @@ export function Navbar({ currentTab, onOpenMobileSidebar }: NavbarProps) {
           </div>
         </div>
 
-        {/* Right: Search, Profile Button & Sign Out Button */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-          {/* Search input pill */}
+
           <div className="relative hidden sm:block">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
@@ -93,7 +92,6 @@ export function Navbar({ currentTab, onOpenMobileSidebar }: NavbarProps) {
             />
           </div>
 
-          {/* User Profile Button */}
           {isLoading ? (
             <div className="flex items-center gap-2 px-3 py-2 bg-slate-50 rounded-xl">
               <Loader2 className="w-4 h-4 animate-spin text-slate-400" />
@@ -122,7 +120,6 @@ export function Navbar({ currentTab, onOpenMobileSidebar }: NavbarProps) {
             </button>
           ) : null}
 
-          {/* Prominent Sign Out Button with Logo */}
           <button
             onClick={handleSignout}
             disabled={signout.isPending}
@@ -139,11 +136,9 @@ export function Navbar({ currentTab, onOpenMobileSidebar }: NavbarProps) {
         </div>
       </header>
 
-      {/* Profile Details Modal */}
       {isProfileModalOpen && profile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
           <div className="bg-white rounded-3xl shadow-xl border border-slate-100 w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            {/* Header banner */}
             <div className="bg-linear-to-tl from-blue-600 to-cyan-400 p-6 text-white relative">
               <button
                 onClick={() => setIsProfileModalOpen(false)}
@@ -162,7 +157,6 @@ export function Navbar({ currentTab, onOpenMobileSidebar }: NavbarProps) {
               </div>
             </div>
 
-            {/* Profile body */}
             <div className="p-6 space-y-4">
               <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100">
                 <Mail className="w-4 h-4 text-slate-400 shrink-0" />

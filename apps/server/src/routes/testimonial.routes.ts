@@ -5,11 +5,9 @@ import { authUser } from "@/middlewares/auth.middleware";
 
 const router: Router = Router();
 
-// Reorder testimonials (must precede /:id)
 router.put("/reorder", authUser, TestimonialController.reorderTestimonials);
 router.put("/:id/reorder", authUser, TestimonialController.reorderTestimonials);
 
-// Create testimonial
 router.post(
   ["/", "/create"],
   authUser,
@@ -17,13 +15,10 @@ router.post(
   TestimonialController.createTestimonial,
 );
 
-// Read all testimonials
 router.get("/", authUser, TestimonialController.getAllTestimonials);
-
-// Read single testimonial by id
 router.get("/:id", authUser, TestimonialController.getTestimonialById);
+router.delete("/:id", authUser, TestimonialController.deleteTestimonial);
 
-// Update testimonial by id
 router.put(
   "/:id",
   authUser,
@@ -37,7 +32,5 @@ router.post(
   TestimonialController.updateTestimonial,
 );
 
-// Delete testimonial by id
-router.delete("/:id", authUser, TestimonialController.deleteTestimonial);
 
 export default router;
