@@ -3,8 +3,9 @@ WORKDIR /app
 
 # Prune the monorepo for the 'server' app
 FROM base AS pruner
+RUN bun add -g turbo
 COPY . .
-RUN bunx turbo prune server --docker
+RUN turbo prune server --docker
 
 # Install dependencies using pruned workspace files
 FROM base AS installer
