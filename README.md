@@ -98,5 +98,3 @@ SEO Dashboard/
 | **Robots Directives & Canonical URL**                 |   Editable    | Locked (Admin Only) |
 | **Contact Information & Map Embed**                   |   Editable    |      View Only      |
 | **Fleet & Content Management**                        |   Full CRUD   | Add, Edit, Reorder  |
-
----
