@@ -39,7 +39,7 @@ export class AuthController {
       role: user.role,
     });
 
-    res.cookie("auth_token", token, getAuthCookieOptions());
+    res.cookie("session", token, getAuthCookieOptions());
 
     return res.status(201).json({
       message: "User registered successfully",
@@ -67,7 +67,6 @@ export class AuthController {
       throw new CTError(401, "Invalid email or password.");
     }
 
-    // FIX: Await password comparison to prevent authentication bypass
     const isPassMatched = await comparePassword(
       parsedData.data.password,
       user.passwordHash,
@@ -84,7 +83,7 @@ export class AuthController {
       role: user.role,
     });
 
-    res.cookie("auth_token", token, getAuthCookieOptions());
+    res.cookie("session", token, getAuthCookieOptions());
 
     return res.status(200).json({
       message: "Signed in successfully",
@@ -117,7 +116,7 @@ export class AuthController {
       await insertToken(token);
     }
 
-    res.clearCookie("auth_token", { path: "/" });
+    res.clearCookie("session", { path: "/" });
 
     return res.status(200).json({
       message: "Logged out successfully",

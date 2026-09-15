@@ -122,7 +122,6 @@ export class VehicleController {
     const rawId = req.params?.id ?? req.body?.id;
     const requestedOrder = req.body?.displayOrder;
 
-    // Single item reorder: PUT /vehicles/:id/reorder or body has { id, displayOrder }
     if (rawId !== undefined && requestedOrder !== undefined) {
       const parsedId = vehicleIdParamValidation.safeParse({ id: rawId });
       if (!parsedId.success) {
@@ -153,7 +152,6 @@ export class VehicleController {
       });
     }
 
-    // Batch reorder: { orders: [{ id, displayOrder }, ...] }
     const parsedData = reorderVehiclesSchema.safeParse(req.body);
 
     if (!parsedData.success) {

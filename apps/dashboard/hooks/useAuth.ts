@@ -24,7 +24,7 @@ export function useSignup() {
     mutationFn: (payload: SignupInput) => authClient.signup(payload),
     onSuccess: (data) => {
       if (data.token) {
-        localStorage.setItem("auth_token", data.token);
+        localStorage.setItem("session", data.token);
       }
       queryClient.setQueryData(authKeys.profile(), data.user);
       queryClient.invalidateQueries({ queryKey: authKeys.profile() });
@@ -39,7 +39,7 @@ export function useSignin() {
     mutationFn: (payload: SigninInput) => authClient.signin(payload),
     onSuccess: (data) => {
       if (data.token) {
-        localStorage.setItem("auth_token", data.token);
+        localStorage.setItem("session", data.token);
       }
       queryClient.setQueryData(authKeys.profile(), data.user);
       queryClient.invalidateQueries({ queryKey: authKeys.profile() });
@@ -53,7 +53,7 @@ export function useSignout() {
   return useMutation({
     mutationFn: () => authClient.signout(),
     onSuccess: () => {
-      localStorage.removeItem("auth_token");
+      localStorage.removeItem("session");
       localStorage.removeItem("token");
       queryClient.clear();
     },

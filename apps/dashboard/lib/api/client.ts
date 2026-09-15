@@ -97,29 +97,6 @@ export function handleAxiosError(error: unknown): ApiError {
   return new ApiError("An unknown error occurred.");
 }
 
-// Request Interceptor (middleware or pre-hook): Handles FormData boundary & Optional Bearer token header
-apiClient.interceptors.request.use(
-  (config) => {
-    // If sending FormData, delete Content-Type so browser sets boundary automatically
-    if (config.data instanceof FormData && config.headers) {
-      delete config.headers["Content-Type"];
-    }
-
-    // Attaching Bearer token from localStorage if present
-    if (typeof window !== "undefined") {
-      const token =
-        localStorage.getItem("auth_token") || localStorage.getItem("token");
-
-      if (token && config.headers && !config.headers.Authorization) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-
-    return config;
-  },
-  (error) => Promise.reject(handleAxiosError(error)),
-);
-
 // Mapping all errors to ApiError
 apiClient.interceptors.response.use(
   (response) => response,

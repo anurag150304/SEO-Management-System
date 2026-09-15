@@ -61,16 +61,8 @@ export const insertToken = async (token: string): Promise<boolean> => {
 };
 
 export const extractToken = (req: Request): string | null => {
-  if (req.cookies?.auth_token) {
-    return req.cookies.auth_token;
-  }
-
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    if (authHeader.startsWith("Bearer ")) {
-      return authHeader.slice(7).trim();
-    }
-    return authHeader.trim();
+  if (req.cookies?.session) {
+    return req.cookies.session;
   }
 
   return null;
@@ -79,10 +71,9 @@ export const extractToken = (req: Request): string | null => {
 export const getAuthCookieOptions = (): CookieOptions => {
   const isProduction = env.NODE_ENV === "production";
   return {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? "none" : "lax",
-    path: "/",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   };
 };

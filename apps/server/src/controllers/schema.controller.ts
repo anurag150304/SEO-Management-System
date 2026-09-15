@@ -40,7 +40,6 @@ export class SchemaController {
   static async getSchema(req: Request, res: Response) {
     const rawParam = req.params?.schemaType ?? req.params?.id;
 
-    // First try parsing as schemaType
     const parsedType = schemaTypeParamValidation.safeParse({
       schemaType: rawParam,
     });
