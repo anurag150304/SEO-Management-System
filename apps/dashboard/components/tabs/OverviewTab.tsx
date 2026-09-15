@@ -26,7 +26,8 @@ interface OverviewTabProps {
 
 export function OverviewTab({ onNavigate }: OverviewTabProps) {
   const publicWebUrl =
-    process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
+    process.env.NODE_ENV === "production" ?
+      process.env.NEXT_PUBLIC_WEB_URL : "http://localhost:3000";
 
   const { data: vehiclesData } = useVehicles();
   const { data: schemasData } = useSchemas();

@@ -9,12 +9,13 @@ dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
 
 const envSchema = z.object({
   NODE_ENV: z
-    .enum(["development", "production", "test"])
+    .enum(["development", "production"])
     .default("development"),
-  PORT: z.coerce.number().default(8000),
 
-  BASE_URL: z.url(),
+  PORT: z.coerce.number().optional(),
+  JWT_SECRET: z.string(),
   BASE_PATH: z.string().default("/api/v1"),
+
   DASHBOARD_URL: z.url(),
   PUBLIC_URL: z.url(),
 
@@ -22,8 +23,8 @@ const envSchema = z.object({
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
 
-  JWT_SECRET: z.string(),
-  DATABASE_URL: z.url(),
+  PROD_DB_URL: z.url(),
+  LOCAL_DB_URL: z.url()
 });
 
 export type EnvType = z.infer<typeof envSchema>;

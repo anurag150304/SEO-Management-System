@@ -2,8 +2,8 @@ import { ApiError, type BackendErrorResponse } from "@/types";
 import axios, { AxiosError } from "axios";
 
 const baseURL = process.env.NODE_ENV === "production" ?
-  process.env.NEXT_PUBLIC_BASE_URL : "http://localhost:8000";
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/api/v1";
+  process.env.NEXT_API_URL : "http://localhost:8000";
+const basePath = process.env.NEXT_API_PATH || "/api/v1";
 
 export const apiClient = axios.create({
   baseURL: `${baseURL}${basePath}/dashboard`,

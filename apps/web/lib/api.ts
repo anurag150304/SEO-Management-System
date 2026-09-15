@@ -2,8 +2,8 @@ import type { PublicHomepageData, PublicHomepageResponse } from "@/types/homepag
 import type { PublicSeoResponse } from "@/types/seo.types";
 
 const API_URL = process.env.NODE_ENV === "production" ?
-  process.env.NEXT_PUBLIC_API_URL : "http://localhost:8000";
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "/api/v1"
+  process.env.NEXT_API_URL : "http://localhost:8000";
+const basePath = process.env.NEXT_API_PATH || "/api/v1"
 
 export async function getPublicSeo(): Promise<PublicSeoResponse | null> {
   try {
