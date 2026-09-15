@@ -24,7 +24,7 @@ const envSchema = z.object({
   CLOUDINARY_API_SECRET: z.string(),
 
   PROD_DB_URL: z.url(),
-  LOCAL_DB_URL: z.url()
+  LOCAL_DB_URL: z.url().optional()
 });
 
 export type EnvType = z.infer<typeof envSchema>;
