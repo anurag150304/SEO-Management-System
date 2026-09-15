@@ -26,7 +26,6 @@ COPY --from=installer /app .
 WORKDIR /app/apps/server
 
 ENV NODE_ENV=production
-ENV PORT=8000
 EXPOSE 8000
 
 CMD ["bun", "run", "src/server.ts"]
