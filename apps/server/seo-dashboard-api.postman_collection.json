@@ -1,0 +1,1771 @@
+{
+  "info": {
+    "_postman_id": "c8f2910d-7b24-4f81-9b16-5e0428d098e2",
+    "name": "UrbanFleet — SEO & Fleet Management API",
+    "description": "Full-fledged Postman collection for complete end-to-end testing of the UrbanFleet API. Contains realistic dummy data across both Public API (/public/*) and Dashboard Management API (/dashboard/*).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "basePath",
+      "value": "/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. System & Health",
+      "item": [
+        {
+          "name": "Root Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        },
+        {
+          "name": "Dashboard Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard"]
+            }
+          }
+        },
+        {
+          "name": "Public API Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Public Website API (No Auth)",
+      "item": [
+        {
+          "name": "Get Aggregated Homepage (Single Fast Call for Next.js SSR)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/homepage",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "homepage"]
+            }
+          }
+        },
+        {
+          "name": "Get Public SEO & JSON-LD (For Next.js generateMetadata)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/seo",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "seo"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Vehicles Fleet",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/vehicles",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Travel Occasions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/occasions",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "occasions"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Testimonials",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/testimonials",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "testimonials"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Media Gallery",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/gallery",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "gallery"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Contact & Map Settings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/contact",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "contact"]
+            }
+          }
+        },
+        {
+          "name": "Get Public Raw Schemas List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/public/schemas",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["public", "schemas"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Authentication",
+      "item": [
+        {
+          "name": "Check Admin Exists (/auth/has-admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/auth/has-admin",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "auth", "has-admin"]
+            }
+          }
+        },
+        {
+          "name": "Sign Up — Initial Admin Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.token) {",
+                  "        pm.collectionVariables.set('authToken', json.token);",
+                  "        console.log('Saved authToken:', json.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Anurag Mishra\",\n  \"email\": \"admin@urbanfleet.com\",\n  \"password\": \"Admin@12345\",\n  \"role\": \"ADMIN\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/auth/signup",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "auth", "signup"]
+            }
+          }
+        },
+        {
+          "name": "Sign In — Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var json = pm.response.json();",
+                  "    if (json.token) {",
+                  "        pm.collectionVariables.set('authToken', json.token);",
+                  "        console.log('Updated authToken:', json.token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@urbanfleet.com\",\n  \"password\": \"Admin@12345\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/auth/signin",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "auth", "signin"]
+            }
+          }
+        },
+        {
+          "name": "Get Current Profile (/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/auth/me",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Sign Out (Blacklist Token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/auth/signout",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "auth", "signout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. SEO Metadata",
+      "item": [
+        {
+          "name": "Get Active SEO Metadata",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/seo",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "seo"]
+            }
+          }
+        },
+        {
+          "name": "Create SEO Metadata (Multipart / Form-Data)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "metaTitle",
+                  "value": "Luxury Tempo Traveller & Force Urbania Rentals | UrbanFleet India",
+                  "type": "text"
+                },
+                {
+                  "key": "metaDescription",
+                  "value": "Rent 9-26 seater luxury tempo travellers, Force Urbania vans, and Volvo tourist buses with pushback seats, dual AC, and verified chauffeurs for outstation trips and weddings.",
+                  "type": "text"
+                },
+                {
+                  "key": "focusKeywords",
+                  "value": "[\"luxury tempo traveller rental\", \"force urbania hire\", \"wedding bus booking\", \"delhi outstation tempo\"]",
+                  "type": "text"
+                },
+                {
+                  "key": "canonicalUrl",
+                  "value": "https://www.urbanfleet.com",
+                  "type": "text"
+                },
+                {
+                  "key": "robotsIndex",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "robotsFollow",
+                  "value": "true",
+                  "type": "text"
+                },
+                {
+                  "key": "ogTitle",
+                  "value": "UrbanFleet — India's Premier Luxury Vehicle Rentals",
+                  "type": "text"
+                },
+                {
+                  "key": "ogDescription",
+                  "value": "Book sanitized, chauffeur-driven luxury Tempo Travellers and Force Urbania vans with 100% on-time dispatch.",
+                  "type": "text"
+                },
+                {
+                  "key": "twitterTitle",
+                  "value": "Luxury Tempo Traveller & Urbania Booking | UrbanFleet",
+                  "type": "text"
+                },
+                {
+                  "key": "twitterDescription",
+                  "value": "Travel in royal maharaja comfort across India. Instant quote and 24/7 helpline.",
+                  "type": "text"
+                },
+                {
+                  "key": "ogImage",
+                  "value": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957",
+                  "type": "text"
+                },
+                {
+                  "key": "twitterImage",
+                  "value": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/seo/create",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "seo", "create"]
+            }
+          }
+        },
+        {
+          "name": "Update SEO Metadata",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "metaTitle",
+                  "value": "Updated: Premium Luxury Tempo Traveller & Urbania Rentals in Delhi NCR",
+                  "type": "text"
+                },
+                {
+                  "key": "focusKeywords",
+                  "value": "[\"delhi tempo traveller\", \"force urbania luxury\"]",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/seo/update",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "seo", "update"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Schemas (JSON-LD Structured Data)",
+      "item": [
+        {
+          "name": "Create / Upsert Organization Schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemaType\": \"ORGANISATION\",\n  \"schemaData\": {\n    \"name\": \"UrbanFleet Luxury Rentals Pvt Ltd\",\n    \"url\": \"https://www.urbanfleet.com\",\n    \"logo\": \"https://images.unsplash.com/photo-1549317661-bd32c8ce0db2\",\n    \"description\": \"India's leading provider of chauffeur-driven luxury tempo travellers, Force Urbania vans, and tourist coaches.\",\n    \"contactPoint\": {\n      \"telephone\": \"+91-9876543210\",\n      \"contactType\": \"customer service\",\n      \"areaServed\": \"IN\",\n      \"availableLanguage\": [\"English\", \"Hindi\"]\n    },\n    \"sameAs\": [\n      \"https://www.facebook.com/urbanfleet\",\n      \"https://www.instagram.com/urbanfleet\"\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas"]
+            }
+          }
+        },
+        {
+          "name": "Create / Upsert Local Business Schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemaType\": \"LOCAL_BUSINESS\",\n  \"schemaData\": {\n    \"name\": \"UrbanFleet Luxury Rentals\",\n    \"image\": \"https://images.unsplash.com/photo-1570125909232-eb263c188f7e\",\n    \"telephone\": \"+91-9876543210\",\n    \"priceRange\": \"₹₹\",\n    \"address\": {\n      \"streetAddress\": \"Plot 45, Sector 18, Commercial Belt\",\n      \"addressLocality\": \"New Delhi\",\n      \"addressRegion\": \"Delhi\",\n      \"postalCode\": \"110001\",\n      \"addressCountry\": \"IN\"\n    },\n    \"openingHours\": \"Mo-Su 00:00-23:59\",\n    \"geo\": {\n      \"latitude\": 28.6139,\n      \"longitude\": 77.2090\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas"]
+            }
+          }
+        },
+        {
+          "name": "Create / Upsert FAQ Schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemaType\": \"FAQ\",\n  \"schemaData\": {\n    \"faqs\": [\n      {\n        \"question\": \"What seating capacities are available for Tempo Travellers?\",\n        \"answer\": \"We offer 9, 12, 16, 20, and 26-seater Tempo Travellers as well as Force Urbania and luxury tourist coaches.\"\n      },\n      {\n        \"question\": \"Are all vehicles air-conditioned with pushback seats?\",\n        \"answer\": \"Yes, 100% of our fleet features dual air conditioning, 1x1 or 2x1 maharaja reclining seats, and spacious luggage boots.\"\n      },\n      {\n        \"question\": \"Do you provide outstation and wedding transit services?\",\n        \"answer\": \"Yes, we operate 24/7 nationwide outstation road trips, airport transfers, and customized wedding guest transportation.\"\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas"]
+            }
+          }
+        },
+        {
+          "name": "Create / Upsert Breadcrumb Schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemaType\": \"BREADCRUMB\",\n  \"schemaData\": {\n    \"itemListElement\": [\n      {\n        \"position\": 1,\n        \"name\": \"Home\",\n        \"item\": \"https://www.urbanfleet.com\"\n      },\n      {\n        \"position\": 2,\n        \"name\": \"Fleet\",\n        \"item\": \"https://www.urbanfleet.com#vehicles\"\n      },\n      {\n        \"position\": 3,\n        \"name\": \"Tempo Travellers\",\n        \"item\": \"https://www.urbanfleet.com#vehicles\"\n      }\n    ]\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas"]
+            }
+          }
+        },
+        {
+          "name": "Create / Upsert Website Schema",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"schemaType\": \"WEBSITE\",\n  \"schemaData\": {\n    \"name\": \"UrbanFleet Rentals Portal\",\n    \"url\": \"https://www.urbanfleet.com\",\n    \"potentialAction\": {\n      \"target\": \"https://www.urbanfleet.com/search?q={search_term_string}\",\n      \"query-input\": \"required name=search_term_string\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas"]
+            }
+          }
+        },
+        {
+          "name": "Get All Schemas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas"]
+            }
+          }
+        },
+        {
+          "name": "Get Schema by Type (ORGANISATION)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas/ORGANISATION",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas", "ORGANISATION"]
+            }
+          }
+        },
+        {
+          "name": "Update Schema by Type (ORGANISATION)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"UrbanFleet India Pvt Ltd\",\n  \"url\": \"https://www.urbanfleet.com\",\n  \"description\": \"India's top rated luxury tempo traveller and bus rental agency with over 50,000 satisfied passengers.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas/ORGANISATION",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas", "ORGANISATION"]
+            }
+          }
+        },
+        {
+          "name": "Delete Schema by Type (ORGANISATION)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/schemas/ORGANISATION",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "schemas", "ORGANISATION"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Homepage Content (CRU)",
+      "item": [
+        {
+          "name": "Get Active Homepage Content",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/homepage",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "homepage"]
+            }
+          }
+        },
+        {
+          "name": "Set Homepage Content (JSON)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"heroHeading\": \"Premium Luxury Tempo Traveller & Urbania Rental\",\n  \"heroSubheading\": \"Travel in supreme comfort with professional verified chauffeurs, luxury pushback seats, and seamless outstation travel packages across India.\",\n  \"heroImage\": \"https://images.unsplash.com/photo-1544620347-c4fd4a3d5957\",\n  \"heroCtaText\": \"Book Your Fleet Now\",\n  \"heroCtaUrl\": \"#vehicles\",\n  \"aboutTitle\": \"Over 15 Years of Excellence in Group Transport\",\n  \"aboutDescription\": \"We specialize in providing top-tier tempo travellers, Force Urbania vans, and luxury coaches for corporate delegations, family outstation tours, and high-profile wedding events across India. Our commitment is punctuality, supreme comfort, and zero compromise on passenger safety.\",\n  \"aboutImage\": \"https://images.unsplash.com/photo-1570125909232-eb263c188f7e\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/homepage",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "homepage"]
+            }
+          }
+        },
+        {
+          "name": "Set Homepage Content (Multipart / FormData)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "heroHeading",
+                  "value": "Experience Royal Group Travel Across India",
+                  "type": "text"
+                },
+                {
+                  "key": "heroSubheading",
+                  "value": "Clean, sanitized, and chauffeur-driven luxury tempo travellers and Force Urbania vans.",
+                  "type": "text"
+                },
+                {
+                  "key": "heroCtaText",
+                  "value": "Explore Lineup",
+                  "type": "text"
+                },
+                {
+                  "key": "heroCtaUrl",
+                  "value": "#vehicles",
+                  "type": "text"
+                },
+                {
+                  "key": "heroImage",
+                  "value": "",
+                  "type": "file",
+                  "description": "Select hero banner image"
+                },
+                {
+                  "key": "aboutImage",
+                  "value": "",
+                  "type": "file",
+                  "description": "Select about section image"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/homepage",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "homepage"]
+            }
+          }
+        },
+        {
+          "name": "Update Homepage Content",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"heroHeading\": \"Premium Luxury Tempo Traveller & Urbania Hire\",\n  \"heroCtaText\": \"Book Your Ride Now\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/homepage",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "homepage"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Vehicles Fleet (CRUD & Reorder)",
+      "item": [
+        {
+          "name": "Create Vehicle 1 (12 Seater Tempo Traveller)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"12 Seater Luxury Tempo Traveller\",\n  \"seatingCapacity\": 12,\n  \"description\": \"1x1 Maharaja pushback luxury seats, dual chilled AC, surround sound, and LCD screen.\",\n  \"image\": \"https://images.unsplash.com/photo-1544620347-c4fd4a3d5957\",\n  \"features\": [\"1x1 Maharaja Seats\", \"Dual AC\", \"Music System\", \"Boot Space\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Create Vehicle 2 (Force Urbania)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Force Urbania Luxury Van (16 Seater)\",\n  \"seatingCapacity\": 16,\n  \"description\": \"European styling, ultra-quiet insulated cabin, individual USB charging, and air suspension.\",\n  \"image\": \"https://images.unsplash.com/photo-1570125909232-eb263c188f7e\",\n  \"features\": [\"Ultra Quiet Cabin\", \"USB Ports\", \"Air Suspension\", \"Reclining Seats\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Create Vehicle 3 (Luxury Volvo Coach)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Luxury Volvo Tourist Coach (45 Seater)\",\n  \"seatingCapacity\": 45,\n  \"description\": \"Full air-suspension luxury bus for corporate conferences, school trips, and long outstation journeys.\",\n  \"image\": \"https://images.unsplash.com/photo-1544620347-c4fd4a3d5957\",\n  \"features\": [\"Air Suspension\", \"Comfort Recliners\", \"Reading Lights\", \"Large Luggage Bay\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Create Vehicle (Multipart / FormData with Image File)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "20 Seater Executive Tempo Traveller",
+                  "type": "text"
+                },
+                {
+                  "key": "seatingCapacity",
+                  "value": "20",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "2x1 pushback configuration with extra legroom and roof luggage carrier.",
+                  "type": "text"
+                },
+                {
+                  "key": "features",
+                  "value": "Pushback Seats, Chilled AC, LED TV, First Aid Kit",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "value": "",
+                  "type": "file",
+                  "description": "Select vehicle picture"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Get All Vehicles (Ordered by displayOrder)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles"]
+            }
+          }
+        },
+        {
+          "name": "Get Vehicle by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Vehicle Details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"12 Seater Executive Tempo Traveller (AC)\",\n  \"features\": [\"Maharaja Pushback Seats\", \"Dual AC\", \"Fast USB Charging\", \"GPS\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles", "1"]
+            }
+          }
+        },
+        {
+          "name": "Reorder Vehicle (Atomic Transaction Shift)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayOrder\": 3\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles/1/reorder",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles", "1", "reorder"]
+            }
+          }
+        },
+        {
+          "name": "Batch Reorder Vehicles",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orders\": [\n    { \"id\": 2, \"displayOrder\": 1 },\n    { \"id\": 1, \"displayOrder\": 2 },\n    { \"id\": 3, \"displayOrder\": 3 }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles/reorder",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles", "reorder"]
+            }
+          }
+        },
+        {
+          "name": "Delete Vehicle by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/vehicles/3",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "vehicles", "3"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. Travel Occasions (CRUD & Reorder)",
+      "item": [
+        {
+          "name": "Create Occasion 1 (Weddings)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Wedding & Barat Transportation\",\n  \"description\": \"Decorated luxury tempo travellers and Volvo coaches to escort wedding guests in royal style.\",\n  \"image\": \"https://images.unsplash.com/photo-1519741497674-611481863552\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions"]
+            }
+          }
+        },
+        {
+          "name": "Create Occasion 2 (Corporate)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Corporate Events & Delegations\",\n  \"description\": \"Punctual, executive travel arrangements for corporate retreats, seminars, and VIP guest pickups.\",\n  \"image\": \"https://images.unsplash.com/photo-1511578314322-379afb476865\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions"]
+            }
+          }
+        },
+        {
+          "name": "Create Occasion 3 (Outstation Trips)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Family Outstation Trips & Hill Stations\",\n  \"description\": \"Customized multi-day road trips to Manali, Shimla, Agra, Jaipur, and Rishikesh with experienced drivers.\",\n  \"image\": \"https://images.unsplash.com/photo-1544620347-c4fd4a3d5957\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions"]
+            }
+          }
+        },
+        {
+          "name": "Get All Occasions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions"]
+            }
+          }
+        },
+        {
+          "name": "Get Occasion by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Occasion",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Grand Wedding & Reception Transportation Fleet\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions", "1"]
+            }
+          }
+        },
+        {
+          "name": "Reorder Occasions",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayOrder\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions/1/reorder",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions", "1", "reorder"]
+            }
+          }
+        },
+        {
+          "name": "Delete Occasion by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/occasions/3",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "occasions", "3"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Testimonials (CRUD & Reorder)",
+      "item": [
+        {
+          "name": "Create Testimonial 1 (5 Stars)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"Vikramaditya Oberoi\",\n  \"rating\": 5,\n  \"review\": \"Booked the Force Urbania for our family trip to Manali. Spotless cleanliness, extremely courteous driver, and supreme suspension comfort across the hills!\",\n  \"image\": \"https://images.unsplash.com/photo-1534528741775-53994a69daeb\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/testimonials",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "testimonials"]
+            }
+          }
+        },
+        {
+          "name": "Create Testimonial 2 (5 Stars)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerName\": \"Sunita Rao (Tech Corp HR)\",\n  \"rating\": 5,\n  \"review\": \"Flawless service for our annual corporate offsite of 80 people. Both luxury coaches arrived 15 minutes before time with water bottles and first aid kits.\",\n  \"image\": \"https://images.unsplash.com/photo-1580489944761-15a19d654956\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/testimonials",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "testimonials"]
+            }
+          }
+        },
+        {
+          "name": "Get All Testimonials",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/testimonials",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "testimonials"]
+            }
+          }
+        },
+        {
+          "name": "Get Testimonial by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/testimonials/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "testimonials", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Testimonial",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"review\": \"Updated: Absolutely exceptional experience! Best luxury tempo fleet in Delhi NCR.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/testimonials/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "testimonials", "1"]
+            }
+          }
+        },
+        {
+          "name": "Reorder Testimonials",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayOrder\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/testimonials/1/reorder",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "testimonials", "1", "reorder"]
+            }
+          }
+        },
+        {
+          "name": "Delete Testimonial by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/testimonials/2",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "testimonials", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Media Gallery (CRUD & Reorder)",
+      "item": [
+        {
+          "name": "Create Gallery Item 1 (Fleet Exterior)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"https://images.unsplash.com/photo-1544620347-c4fd4a3d5957\",\n  \"altText\": \"Luxury Force Urbania and 12-seater Tempo Traveller fleet lined up for corporate dispatch\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery"]
+            }
+          }
+        },
+        {
+          "name": "Create Gallery Item 2 (Maharaja Interior)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"image\": \"https://images.unsplash.com/photo-1570125909232-eb263c188f7e\",\n  \"altText\": \"Comfortable pushback luxury leather seats inside 16 seater Tempo Traveller\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery"]
+            }
+          }
+        },
+        {
+          "name": "Upload Gallery Image (Multipart / FormData File)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "altText",
+                  "value": "Executive 45 seater luxury tourist coach front view",
+                  "type": "text"
+                },
+                {
+                  "key": "image",
+                  "value": "",
+                  "type": "file",
+                  "description": "Select gallery picture"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery"]
+            }
+          }
+        },
+        {
+          "name": "Get All Gallery Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery"]
+            }
+          }
+        },
+        {
+          "name": "Get Gallery Item by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Gallery Item",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"altText\": \"Updated: Premium 1x1 Maharaja Reclining Seats inside Force Urbania Luxury Van\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery/1",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery", "1"]
+            }
+          }
+        },
+        {
+          "name": "Reorder Gallery Items",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayOrder\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery/1/reorder",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery", "1", "reorder"]
+            }
+          }
+        },
+        {
+          "name": "Delete Gallery Item by ID",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/gallery/2",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "gallery", "2"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Contact Settings (CRU)",
+      "item": [
+        {
+          "name": "Get Contact Settings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/contact",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "contact"]
+            }
+          }
+        },
+        {
+          "name": "Create or Set Contact Settings",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 98765 43210\",\n  \"email\": \"booking@urbanfleet.com\",\n  \"address\": \"Plot No. 45, Ground Floor, Sector 18 Commercial Hub, Near Metro Station, New Delhi - 110001\",\n  \"mapEmbed\": \"<iframe src=\\\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.83923192776!2d77.0688975472578!3d28.52758200617607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0x37205b715389640!2sDelhi!5e0!3m2!1sen!2sin!4v1690000000000!5m2!1sen!2sin\\\" width=\\\"600\\\" height=\\\"450\\\" style=\\\"border:0;\\\" allowfullscreen=\\\"\\\" loading=\\\"lazy\\\"></iframe>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/contact",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "contact"]
+            }
+          }
+        },
+        {
+          "name": "Update Contact Settings",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+91 98765 00000\",\n  \"email\": \"support@urbanfleet.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}{{basePath}}/dashboard/contact",
+              "host": ["{{baseUrl}}{{basePath}}"],
+              "path": ["dashboard", "contact"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -6,12 +6,11 @@
   "scripts": {
     "dev": "next dev --port 3000",
     "build": "next build",
-    "start": "next start --port 3000",
+    "start": "next start",
     "lint": "eslint",
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@repo/db-config": "workspace:*",
     "@repo/zod-validations": "workspace:*",
     "@tailwindcss/postcss": "^4.3.3",
     "lucide-react": "^1.45.0",
